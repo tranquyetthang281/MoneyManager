@@ -1,0 +1,31 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidebar-width);
+    background-color: var(--white);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .2);
+}
+
+.btn {
+    width: var(--sidebar-width);
+    height: var(--sidebar-width);
+    background-color: transparent;
+    color: rgb(117, 117, 117);
+
+    &:hover {
+        cursor: pointer;
+        background-color: rgb(45, 184, 76, .1);
+    }
+}
+
+.btn-title {
+    font-size: 1.2rem;
+}
+
+.current {
+    color: var(--primary)
+}

@@ -1,0 +1,61 @@
+.wrapper {
+    flex-grow: 1;
+    width: calc(100% - var(--sidebar-width));
+    margin-left: var(--sidebar-width);
+}
+
+.transactions-list {
+    background-color: var(--white);
+    height: calc(100vh - var(--header-height) - 20px);
+    margin: 20px 20px 0 20px;
+    box-shadow: 0 3px 24px 0 rgba(0, 0, 0, .2);
+
+    ::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+.edit-form {
+    background-color: var(--white);
+    height: 100px;
+    margin: 20px 20px 0 0;
+    min-width: 200px;
+    box-shadow: 0 3px 24px 0 rgba(0, 0, 0, .2);
+    border-radius: 0 0 4px 4px;
+}
+
+.time-select {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.time-select-btn {
+    flex-grow: 1;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: rgba(160,160,160);
+    letter-spacing: 1.5px;
+    padding: 20px 10px;
+    background-color: transparent;
+    border-bottom-style: solid;
+    border-width: 1px;
+    
+    &:hover {
+        background-color: rgba(45, 184, 76, .1);
+        cursor: pointer;
+    }
+}
+
+.time-select-btn-center {
+    color: var(--primary);
+    border-width: 3px;
+}
+
+.money-in {
+    color: #039be5
+}
+
+.money-out {
+    color: #e51c23
+}

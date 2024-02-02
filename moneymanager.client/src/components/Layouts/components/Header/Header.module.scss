@@ -1,0 +1,39 @@
+.wrapper {
+    background-color: var(--white);
+    width: 100%;
+    height: var(--header-height);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .09);
+    display: flex;
+    justify-content: space-between;
+}
+
+.wallets {
+    width: 400px;
+    height: 100%;
+    left: var(--sidebar-width);
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 32px;
+}
+
+.icons {
+    width: 144px;
+    height: 100%;
+    margin-right: 48px;
+    display: flex;
+}
+
+.btn {  
+    width: 48px;
+    height: 48px;
+    align-self: center;
+    font-size: 2.0rem;
+    color: rgb(117, 117, 117);
+    background-color: transparent;
+
+    &:hover {
+        cursor: pointer;
+        color: var(--primary);
+    }
+}
