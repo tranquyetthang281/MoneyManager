@@ -8,6 +8,7 @@ import classNames from "classnames/bind";
 import { useCallback, useState } from "react";
 import styles from "./Sidebar.module.scss";
 import SettingDrawer from "../SettingDrawer";
+import { Link } from "react-router-dom";
 
 const cx = classNames.bind(styles)
 
@@ -25,36 +26,42 @@ function Sidebar() {
 
     return (
         <div className={cx('wrapper')}>
-            <SettingDrawer isShowing={isShowingDrawer} toggleDrawer={toggleDrawer}/>
+            <SettingDrawer isShowing={isShowingDrawer} toggleDrawer={toggleDrawer} />
 
             <button className={cx('btn')} onClick={toggleDrawer(true)}>
                 <MenuIcon sx={{ fontSize: 24 }} />
             </button>
 
-            <button className={cx('btn', isCurrentPage(1, currentPageKey) ? 'current' : null)}
-                onClick={() => setCurrentPageKey(1)}>
-                <Stack alignItems="center">
-                    <AccountBalanceWalletIcon sx={{ fontSize: 25 }} />
-                    <span className={cx('btn-title')}>Transactions</span>
-                </Stack>
-            </button>
+            <Link to="/">
+                <button className={cx('btn', isCurrentPage(1, currentPageKey) ? 'current' : null)}
+                    onClick={() => setCurrentPageKey(1)}>
+                    <Stack alignItems="center">
+                        <AccountBalanceWalletIcon sx={{ fontSize: 25 }} />
+                        <span className={cx('btn-title')}>Transactions</span>
+                    </Stack>
+                </button>
+            </Link>
 
-            <button className={cx('btn', isCurrentPage(2, currentPageKey) ? 'current' : null)}
-                onClick={() => setCurrentPageKey(2)}>
-                <Stack alignItems="center">
-                    <PaymentsIcon sx={{ fontSize: 25 }} />
-                    <span className={cx('btn-title')}>Budgets</span>
-                </Stack>
-            </button>
+            <Link to="/budgets">
+                <button className={cx('btn', isCurrentPage(2, currentPageKey) ? 'current' : null)}
+                    onClick={() => setCurrentPageKey(2)}>
+                    <Stack alignItems="center">
+                        <PaymentsIcon sx={{ fontSize: 25 }} />
+                        <span className={cx('btn-title')}>Budgets</span>
+                    </Stack>
+                </button>
+            </Link>
 
-            <button className={cx('btn', isCurrentPage(3, currentPageKey) ? 'current' : null)}
-                onClick={() => setCurrentPageKey(3)}>
-                <Stack alignItems="center">
-                    <AssessmentIcon sx={{ fontSize: 25 }} />
-                    <span className={cx('btn-title')}>Spending</span>
-                    <span className={cx('btn-title')}>report</span>
-                </Stack>
-            </button>
+            <Link to="/spending-report">
+                <button className={cx('btn', isCurrentPage(3, currentPageKey) ? 'current' : null)}
+                    onClick={() => setCurrentPageKey(3)}>
+                    <Stack alignItems="center">
+                        <AssessmentIcon sx={{ fontSize: 25 }} />
+                        <span className={cx('btn-title')}>Spending</span>
+                        <span className={cx('btn-title')}>report</span>
+                    </Stack>
+                </button>
+            </Link>
 
             <button className={cx('btn', isCurrentPage(4, currentPageKey) ? 'current' : null)}
                 onClick={() => setCurrentPageKey(4)}>

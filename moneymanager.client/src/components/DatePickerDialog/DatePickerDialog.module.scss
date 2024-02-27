@@ -1,0 +1,30 @@
+.btn {
+    width: 60px;
+    height: 30px;
+    margin: 0px 10px 10px 10px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    font-weight: 600;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.save-btn {
+    background-color: var(--primary);
+    color: white;
+
+    &:hover {
+        background-color: rgb(45, 184, 76, 0.6);
+    }
+}
+
+.cancel-btn {
+
+    color: var(--primary);
+
+    &:hover {
+        background-color: rgba(#ccc, 0.6);
+    }
+}

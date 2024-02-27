@@ -1,0 +1,120 @@
+.content {
+    width: 1008px;
+    height: 400px;
+}
+
+.select {
+    width: 300px;
+    height: 80px;
+    border: 1.5px solid rgb(154, 154, 154, 0.5);
+    border-radius: 10px;
+    padding: 10px;
+    background-color: transparent;
+    margin: 10px;
+
+    &:hover {
+        cursor: pointer;
+        border-color: var(--primary);
+        background-color: rgba(45, 184, 76, 0.1);
+    }
+}
+
+.select-title {
+    font-size: 1.4rem;
+    color: rgb(154, 154, 154);
+    margin-bottom: auto;
+}
+
+.select-name {
+    font-size: 1.6rem;
+    margin-left: 10px;
+}
+
+.select-avatar {
+    width: 32px;
+    height: 32px;
+}
+
+.select-amount {
+    width: 300px;
+    height: 80px;
+    border: 1.5px solid rgb(154, 154, 154, 0.5);
+    border-radius: 10px;
+    padding: 10px;
+    background-color: transparent;
+    margin: 10px;
+
+    &:hover {
+        border-color: var(--primary);
+    }
+
+    &:focus-within {
+        border-color: var(--primary);
+    }
+}
+
+.input-amount {
+    margin-bottom: 5px;
+    caret-color: var(--primary);
+}
+
+.date {
+    font-size: 1.6rem;
+}
+
+.select-note {
+    width: 620px;
+    height: 80px;
+    border: 1.5px solid rgb(154, 154, 154, 0.5);
+    border-radius: 10px;
+    padding: 10px;
+    background-color: transparent;
+    margin: 10px;
+
+    &:hover {
+        border-color: var(--primary);
+    }
+
+    &:focus-within {
+        border-color: var(--primary);
+    }
+}
+
+.btn {
+    width: 100px;
+    height: 40px;
+    margin: 4px 10px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    font-weight: 600;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.save-btn {
+    background-color: var(--primary);
+    color: white;
+    margin-right: 20px;
+
+    &:hover {
+        background-color: rgb(45, 184, 76, 0.6);
+    }
+}
+
+.cancel-btn {
+    color: var(--primary);
+    margin-right: 20px;
+
+    &:hover {
+        background-color: rgba(#ccc, 0.6);
+    }
+}
+
+.input-note {
+    caret-color: var(--primary);
+    font-size: 1.6rem;
+    margin-top: 10px;
+    width: 100%;
+}

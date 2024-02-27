@@ -6,12 +6,12 @@ import CategoryIcon from '@mui/icons-material/Category';
 import SearchIcon from '@mui/icons-material/Search';
 import classNames from "classnames/bind";
 import { useState } from "react";
-import styles from './Header.module.scss';
+import styles from './TransactionsHeader.module.scss';
 import WalletSelection from "../WalletSelection";
 
 const cx = classNames.bind(styles)
 
-function Header() {
+function TransactionsHeader() {
 
     const [viewByTransaction, setViewByTransaction] = useState(true)
 
@@ -46,4 +46,4 @@ function Header() {
     );
 }
 
-export default Header;
+export default TransactionsHeader;

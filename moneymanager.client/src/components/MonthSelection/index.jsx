@@ -5,8 +5,8 @@ import {
 import DoneIcon from '@mui/icons-material/Done';
 import { Fragment, memo, useState } from 'react';
 import classNames from 'classnames/bind';
-import styles from './WalletSelection.module.scss';
-import { CURRENCY_UNIT } from '../../../../utils/constants';
+import styles from './MonthSelection.module.scss';
+import { CURRENCY_UNIT } from '../../utils/constants';
 
 const cx = classNames.bind(styles)
 
@@ -62,7 +62,7 @@ const listWallets = [
     }
 ]
 
-function WalletSelection() {
+function MonthSelection() {
 
     const [currentWallet, setCurrentWallet] = useState(listWallets[0])
     const [isShowingSelection, setIsShowingSelection] = useState(false)
@@ -104,7 +104,7 @@ function WalletSelection() {
                                                 setIsShowingSelection(false)
                                             }}>
                                             <ListItemAvatar>
-                                                <Avatar src={currentWallet.icon} />
+                                                <Avatar src={wallet.icon} />
                                             </ListItemAvatar>
                                             <ListItemText
                                                 primary={
@@ -137,4 +137,4 @@ function WalletSelection() {
     );
 }
 
-export default memo(WalletSelection);
+export default memo(MonthSelection);
