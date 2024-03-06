@@ -1,9 +1,9 @@
 import Sidebar from "../../components/Sidebar";
 
-function DefaultLayout({ children }) {
+function DefaultLayout({ currentKey, children }) {
     return (
         <div>
-            <Sidebar />
+            <Sidebar currentKey={currentKey} />
             <div>{children}</div>
         </div>
     );

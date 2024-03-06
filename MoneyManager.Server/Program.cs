@@ -1,6 +1,16 @@
+using Microsoft.AspNetCore.HttpOverrides;
+using MoneyManager.Server.Configure.Extensions;
+using NLog;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+LogManager.Setup().LoadConfigurationFromFile(
+    string.Concat(Directory.GetCurrentDirectory(), "/Configure/nlog.config"));
+
+builder.Services.ConfigureIISIntegration();
+builder.Services.ConfigureLoggerService();
+builder.Services.ConfigureRepositoryManager();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -18,8 +28,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else
+{
+    app.UseHsts();
+}
 
 app.UseHttpsRedirection();
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.All
+});
 
 app.UseAuthorization();
 

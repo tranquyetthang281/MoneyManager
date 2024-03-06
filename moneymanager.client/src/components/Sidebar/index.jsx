@@ -14,8 +14,8 @@ const cx = classNames.bind(styles)
 
 const isCurrentPage = (key, currentPageKey) => key === currentPageKey
 
-function Sidebar() {
-    const [currentPageKey, setCurrentPageKey] = useState(1)
+function Sidebar({ currentKey }) {
+    const [currentPageKey, setCurrentPageKey] = useState(currentKey)
     const [isShowingDrawer, setIsShowingDrawer] = useState(false)
     const toggleDrawer = useCallback((isShowing) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -33,8 +33,8 @@ function Sidebar() {
             </button>
 
             <Link to="/">
-                <button className={cx('btn', isCurrentPage(1, currentPageKey) ? 'current' : null)}
-                    onClick={() => setCurrentPageKey(1)}>
+                <button className={cx('btn', isCurrentPage(0, currentPageKey) ? 'current' : null)}
+                    onClick={() => setCurrentPageKey(0)}>
                     <Stack alignItems="center">
                         <AccountBalanceWalletIcon sx={{ fontSize: 25 }} />
                         <span className={cx('btn-title')}>Transactions</span>
@@ -43,8 +43,8 @@ function Sidebar() {
             </Link>
 
             <Link to="/budgets">
-                <button className={cx('btn', isCurrentPage(2, currentPageKey) ? 'current' : null)}
-                    onClick={() => setCurrentPageKey(2)}>
+                <button className={cx('btn', isCurrentPage(1, currentPageKey) ? 'current' : null)}
+                    onClick={() => setCurrentPageKey(1)}>
                     <Stack alignItems="center">
                         <PaymentsIcon sx={{ fontSize: 25 }} />
                         <span className={cx('btn-title')}>Budgets</span>
@@ -53,8 +53,8 @@ function Sidebar() {
             </Link>
 
             <Link to="/spending-report">
-                <button className={cx('btn', isCurrentPage(3, currentPageKey) ? 'current' : null)}
-                    onClick={() => setCurrentPageKey(3)}>
+                <button className={cx('btn', isCurrentPage(2, currentPageKey) ? 'current' : null)}
+                    onClick={() => setCurrentPageKey(2)}>
                     <Stack alignItems="center">
                         <AssessmentIcon sx={{ fontSize: 25 }} />
                         <span className={cx('btn-title')}>Spending</span>
@@ -63,8 +63,8 @@ function Sidebar() {
                 </button>
             </Link>
 
-            <button className={cx('btn', isCurrentPage(4, currentPageKey) ? 'current' : null)}
-                onClick={() => setCurrentPageKey(4)}>
+            <button className={cx('btn', isCurrentPage(3, currentPageKey) ? 'current' : null)}
+                onClick={() => setCurrentPageKey(3)}>
                 <Stack alignItems="center">
                     <WaterfallChartIcon sx={{ fontSize: 25 }} />
                     <span className={cx('btn-title')}>Investment</span>

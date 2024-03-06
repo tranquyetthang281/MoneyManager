@@ -4,78 +4,79 @@
     margin-left: var(--sidebar-width);
     position: absolute;
     justify-content: center;
-}
-
-
-.reports {
-    background-color: var(--white);
-    height: calc(100vh - var(--header-height) - 40px);
-    margin: 20px 20px 0 20px;
-    box-shadow: 0 3px 24px 0 rgba(0, 0, 0, .2);
-    width: 40%;
 
     ::-webkit-scrollbar {
         display: none;
     }
 }
 
-.transaction-detail {
+.reports {
     background-color: var(--white);
-    height: 260px;
-    margin: 0;
+    margin: 20px 20px 0 20px;
     box-shadow: 0 3px 24px 0 rgba(0, 0, 0, .2);
-    border-radius: 0 0 4px 4px;
-    overflow: hidden;
-    flex: 0;
-    transition: flex 0.3s;
-    white-space: nowrap;
+    min-width: 800px;
+    height: calc(100vh - var(--header-height) - 20px);
+    overflow-y: scroll;
 }
 
-.time-select {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.time-select-btn {
-    flex-grow: 1;
-    font-size: 1.4rem;
+.total-balance {
+    font-size: 2.0rem;
     font-weight: 600;
-    color: rgba(160, 160, 160);
-    letter-spacing: 1.5px;
-    padding: 20px 10px;
-    background-color: transparent;
-    border-bottom-style: solid;
-    border-width: 1px;
+    margin-top: 20px;
+}
+
+.inflow {
+    margin-bottom: 20px;
+    font-size: 2.0rem;
+    color: #039be5;
+}
+
+.outflow {
+    margin-bottom: 20px;
+    font-size: 2.0rem;
+    color: #e51c23;
+}
+
+.divider {
+    width: 100%;
+    border-bottom-width: 2px;
+}
+
+.inflow-pie {
+    width: 100%;
+    padding: 20px;
 
     &:hover {
-        background-color: rgba(45, 184, 76, .1);
+        background-color: rgba(#039be5, .2);
         cursor: pointer;
     }
 }
 
-.time-select-btn-center {
-    color: var(--primary);
-    border-width: 3px;
-}
-
-.transaction-detail-show {
-    flex: auto;
-    margin: 20px 20px 0 0;
-}
-
-.add-transaction-btn {
-
-    color: #fff;
-    background-color: var(--primary);
-    position: absolute;
-    right: 140px;
-    bottom: 70px;
-    width: 70px;
-    height: 70px;
-    z-index: 190;
+.outflow-pie {
+    width: 100%;
+    padding: 20px;
 
     &:hover {
-        background-color: green
+        background-color: rgba(#e51c23, .2);
+        cursor: pointer;
     }
+}
+
+.report-detail {
+    background-color: var(--white);
+    height: calc(100vh - var(--header-height) - 20px);
+    margin: 20px 20px 0 0;
+    box-shadow: 0 3px 24px 0 rgba(0, 0, 0, .2);
+    border-radius: 0 0 4px 4px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    // flex: 0;
+    transition: flex 0.3s;
+    white-space: nowrap;
+    flex: auto;
+}
+
+.report-detail-show {
+    flex: auto;
+    margin-right: 20px;
 }

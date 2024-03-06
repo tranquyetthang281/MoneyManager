@@ -10,9 +10,14 @@ import { StaticDatePicker } from "@mui/x-date-pickers";
 const cx = classNames.bind(styles)
 
 function DatePickerDialog({ open, openCloseDialog, date, setDate }) {
+    const handleClose = (_, reason) => {
+        if (reason && reason === "backdropClick")
+            return;
+        openCloseDialog(false);
+    }
 
     return (
-        <Dialog open={open} onClose={() => openCloseDialog(false)} maxWidth="lg"
+        <Dialog open={open} onClose={handleClose} maxWidth="lg"
             PaperProps={{
                 sx: {
                     width: 320,
@@ -53,7 +58,8 @@ function DatePickerDialog({ open, openCloseDialog, date, setDate }) {
                     <Button className={cx('btn', 'save-btn')}>
                         Ok
                     </Button>
-                    <Button className={cx('btn', 'cancel-btn')}>
+                    <Button className={cx('btn', 'cancel-btn')}
+                        onClick={() => openCloseDialog(false)}>
                         Cancel
                     </Button>
                 </Stack>

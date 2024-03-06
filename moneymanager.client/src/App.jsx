@@ -24,7 +24,7 @@ function App() {
                                     key={index}
                                     path={route.path}
                                     element={
-                                        <Layout>
+                                        <Layout currentKey={index}>
                                             <Page />
                                         </Layout>
                                     }

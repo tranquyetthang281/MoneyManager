@@ -21,7 +21,7 @@
 .months {
     height: 100%;
     position: absolute;
-    left: calc((100vw - var(--sidebar-width)) / 2);
+    left: calc((100vw - var(--sidebar-width)) / 2 - 50px);
     display: flex;
     align-items: center;
 }

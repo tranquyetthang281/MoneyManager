@@ -22,13 +22,13 @@
 .transaction-detail {
     background-color: var(--white);
     height: 260px;
-    margin: 0;
     box-shadow: 0 3px 24px 0 rgba(0, 0, 0, .2);
     border-radius: 0 0 4px 4px;
     overflow: hidden;
     flex: 0;
     transition: flex 0.3s;
     white-space: nowrap;
+    margin-top: 20px;
 }
 
 .time-select {
@@ -61,7 +61,7 @@
 
 .transaction-detail-show {
     flex: auto;
-    margin: 20px 20px 0 0;
+    margin-right: 20px;
 }
 
 .add-transaction-btn {
@@ -78,4 +78,12 @@
     &:hover {
         background-color: green
     }
+}
+
+.money-in {
+    color: #039be5
+}
+
+.money-out {
+    color: #e51c23
 }
