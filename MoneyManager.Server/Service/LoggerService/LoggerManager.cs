@@ -2,7 +2,7 @@
 using NLog;
 using ILogger = NLog.ILogger;
 
-namespace MoneyManager.Server.LoggerService
+namespace MoneyManager.Server.Service.LoggerService
 {
     public class LoggerManager : ILoggerManager
     {

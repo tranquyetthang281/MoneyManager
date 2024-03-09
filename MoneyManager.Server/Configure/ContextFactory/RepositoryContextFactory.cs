@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Design;
 using MoneyManager.Server.Repository;
 
-namespace CompanyEmployees.ContextFactory
+namespace MoneyManager.Server.ContextFactory
 {
     public class RepositoryContextFactory : IDesignTimeDbContextFactory<RepositoryContext>
     {
@@ -14,7 +14,8 @@ namespace CompanyEmployees.ContextFactory
                 .Build();
 
             var builder = new DbContextOptionsBuilder<RepositoryContext>()
-                .UseSqlServer(configuration.GetConnectionString("sqlConnection"));
+                .UseSqlServer(configuration.GetConnectionString("sqlConnection"),
+                    b => b.MigrationsAssembly("MoneyManager"));
 
             return new RepositoryContext(builder.Options);
         }
