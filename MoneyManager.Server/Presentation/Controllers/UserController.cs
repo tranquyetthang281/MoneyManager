@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using MoneyManager.Server.Contracts.ServiceContracts;
+using MoneyManager.Server.Presentation.ActionFilters;
 using MoneyManager.Server.Shared.DataTransferObjects.User;
 
 namespace MoneyManager.Server.Presentation.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/users")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -28,11 +29,10 @@ namespace MoneyManager.Server.Presentation.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] UserForCreationDto user)
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> CreateUser([FromBody] UserForCreationDto userDto)
         {
-            if (user is null)
-                return BadRequest("UserForCreationDto is null");
-            var createdUser = await _service.UserService.CreateUserAsync(user);
+            var createdUser = await _service.UserService.CreateUserAsync(userDto);
             return CreatedAtRoute("UserById", new { id = createdUser.Id }, createdUser);
         }
 
@@ -44,11 +44,10 @@ namespace MoneyManager.Server.Presentation.Controllers
         }
 
         [HttpPut("{id:guid}")]
-        public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UserForUpdateDto user)
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UserForUpdateDto userDto)
         {
-            if (user is null)
-                return BadRequest("UserForUpdateDto object is null");
-            await _service.UserService.UpdateUserAsync(id, user, trackChanges: true);
+            await _service.UserService.UpdateUserAsync(id, userDto, trackChanges: true);           
             return NoContent();
         }
 
@@ -63,6 +62,7 @@ namespace MoneyManager.Server.Presentation.Controllers
             patchDoc.ApplyTo(result.userToPatch, ModelState);
 
             TryValidateModel(result.userToPatch);
+           
             if (!ModelState.IsValid)
                 return UnprocessableEntity(ModelState);
 

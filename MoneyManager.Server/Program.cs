@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MoneyManager.Server.Configure.Extensions;
 using MoneyManager.Server.Contracts;
 using MoneyManager.Server.Extensions;
+using MoneyManager.Server.Presentation.ActionFilters;
 using MoneyManager.Server.Utility;
 using NLog;
 
@@ -17,6 +18,7 @@ builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddScoped<ValidationFilterAttribute>();
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;

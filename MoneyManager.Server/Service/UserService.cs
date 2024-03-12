@@ -45,12 +45,12 @@ namespace MoneyManager.Server.Service
             return user;
         }
 
-        public async Task<UserDto> CreateUserAsync(UserForCreationDto user)
+        public async Task<UserDto> CreateUserAsync(UserForCreationDto userDto)
         {
-            var userEntity = _mapper.Map<User>(user);
-            _repository.User.CrateUser(userEntity);
+            var user = _mapper.Map<User>(userDto);
+            _repository.User.CrateUser(user);
             await _repository.SaveAsync();
-            var userToReturn = _mapper.Map<UserDto>(userEntity);
+            var userToReturn = _mapper.Map<UserDto>(user);
             return userToReturn;
         }
 
@@ -61,18 +61,18 @@ namespace MoneyManager.Server.Service
             await _repository.SaveAsync();
         }
 
-        public async Task UpdateUserAsync(Guid id, UserForUpdateDto user, bool trackChanges)
+        public async Task UpdateUserAsync(Guid id, UserForUpdateDto userDto, bool trackChanges)
         {
-            var userEntity = await GetUserAndCheckIfItExists(id, trackChanges);
-            _mapper.Map(user, userEntity);
+            var user = await GetUserAndCheckIfItExists(id, trackChanges);
+            _mapper.Map(userDto, user);
             await _repository.SaveAsync();
         }
 
         public async Task<(UserForUpdateDto userToPatch, User userEntity)> GetUserForPatchAsync(Guid id, bool trackChanges)
         {
-            var userEntity = await GetUserAndCheckIfItExists(id, trackChanges);
-            var userToPatch = _mapper.Map<UserForUpdateDto>(userEntity);
-            return (userToPatch, userEntity);
+            var user = await GetUserAndCheckIfItExists(id, trackChanges);
+            var userToPatch = _mapper.Map<UserForUpdateDto>(user);
+            return (userToPatch, user);
         }
 
         public async Task SaveChangesForPatchAsync(UserForUpdateDto userToPatch, User userEntity)

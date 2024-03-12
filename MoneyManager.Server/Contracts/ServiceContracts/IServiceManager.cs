@@ -6,8 +6,6 @@
 
         IWalletService WalletService { get; }
 
-        IUserWalletService UserWalletService { get; }
-
         IFrienshipService FrienshipService { get; }
 
         ITransactionService TransactionService { get; }

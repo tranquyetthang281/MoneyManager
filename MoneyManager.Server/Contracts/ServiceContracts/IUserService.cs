@@ -9,11 +9,11 @@ namespace MoneyManager.Server.Contracts.ServiceContracts
 
         Task<UserDto> GetUserAsync(Guid id, bool trackChanges);
 
-        Task<UserDto> CreateUserAsync(UserForCreationDto user);
+        Task<UserDto> CreateUserAsync(UserForCreationDto userDto);
 
         Task DeleteUserAsync(Guid id, bool trackChanges);
 
-        Task UpdateUserAsync(Guid id, UserForUpdateDto user, bool trackChanges);
+        Task UpdateUserAsync(Guid id, UserForUpdateDto userDto, bool trackChanges);
 
         Task<(UserForUpdateDto userToPatch, User userEntity)> GetUserForPatchAsync(Guid id, bool trackChanges);
 
