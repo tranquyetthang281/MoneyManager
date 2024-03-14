@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MoneyManager.Server.Contracts.ServiceContracts;
 using MoneyManager.Server.Presentation.ActionFilters;
+using MoneyManager.Server.Shared.DataTransferObjects.Friend;
 using MoneyManager.Server.Shared.DataTransferObjects.Wallet;
 
 namespace MoneyManager.Server.Presentation.Controllers
@@ -27,11 +28,28 @@ namespace MoneyManager.Server.Presentation.Controllers
         }
 
         [HttpPost]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidationDtoFilterAttribute))]
         public async Task<IActionResult> CreateWalletForUser(Guid userId, [FromBody] WalletForCreationDto walletDto)
         {
             var wallet = await _service.WalletService.CreateWalletForUserAsync(userId, walletDto, trackChanges: false);
             return CreatedAtRoute("GetWalletForUser", new { userId, walletId = wallet.Id }, wallet);
+        }
+
+        [HttpPut("{walletId:guid}")]
+        [ServiceFilter(typeof(ValidationDtoFilterAttribute))]
+        public async Task<IActionResult> UpdateWalletNameForUser(Guid userId, Guid walletId, [FromBody] WalletForUpdateNameDto walletDto)
+        {
+            await _service.WalletService.UpdateWalletNameForUserAsync
+                (userId, walletId, walletDto, userTrackChanges: false, walletTrackChanges: true);
+            return NoContent();
+        }
+
+        [HttpPost("{walletId:guid}")]
+        [ServiceFilter(typeof(ValidationDtoFilterAttribute))]
+        public async Task<IActionResult> AddFriendToWallet(Guid userId, Guid walletId, [FromBody] FriendForAddToWalletDto friendDto)
+        {
+            await _service.WalletService.AddFriendToWalletAsync(userId, walletId, friendDto.FriendID, trackChanges: false);
+            return NoContent();
         }
     }
 }

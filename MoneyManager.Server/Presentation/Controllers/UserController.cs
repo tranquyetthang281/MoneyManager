@@ -29,7 +29,7 @@ namespace MoneyManager.Server.Presentation.Controllers
         }
 
         [HttpPost]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidationDtoFilterAttribute))]
         public async Task<IActionResult> CreateUser([FromBody] UserForCreationDto userDto)
         {
             var createdUser = await _service.UserService.CreateUserAsync(userDto);
@@ -44,7 +44,7 @@ namespace MoneyManager.Server.Presentation.Controllers
         }
 
         [HttpPut("{id:guid}")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        [ServiceFilter(typeof(ValidationDtoFilterAttribute))]
         public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UserForUpdateDto userDto)
         {
             await _service.UserService.UpdateUserAsync(id, userDto, trackChanges: true);           

@@ -7,5 +7,7 @@ namespace MoneyManager.Server.Contracts.RepositoryContracts
         void CreateUserWallet(UserWallet userWallet);
 
         Task<UserWallet?> GetUserWalletAsync(Guid userId, Guid walletId, bool trackChanges);
+
+        void DeleteUserWallet(UserWallet userWallet);
     }
 }

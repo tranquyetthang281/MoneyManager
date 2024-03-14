@@ -10,6 +10,8 @@ namespace MoneyManager.Server.Entities.Models
 
         public Guid FriendId { get; set; }
 
+        public bool IsAccepted { get; set; }
+
         public virtual User? User { get; set; }
 
         public virtual User? Friend { get; set; }

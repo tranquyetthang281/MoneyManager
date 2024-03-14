@@ -9,5 +9,7 @@ namespace MoneyManager.Server.Contracts.RepositoryContracts
         void CreateWallet(Wallet wallet);
 
         Task<Wallet?> GetWalletAsync(Guid id, bool trackChanges);
+
+        void DeleteWallet(Wallet wallet);
     }
 }

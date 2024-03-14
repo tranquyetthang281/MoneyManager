@@ -11,9 +11,11 @@ namespace MoneyManager.Server.Repository
         }
 
         public async Task<UserWallet?> GetUserWalletAsync(Guid userId, Guid walletId, bool trackChanges)
-            => await FindByCondition(uw => uw.UserId.Equals(userId) && uw.WalletId.Equals(walletId), trackChanges)
+            => await FindByCondition(uw => uw.UserId == userId && uw.WalletId == walletId, trackChanges)
                     .SingleOrDefaultAsync();
 
         public void CreateUserWallet(UserWallet userWallet) => Create(userWallet);
+
+        public void DeleteUserWallet(UserWallet userWallet) => Delete(userWallet);
     }
 }

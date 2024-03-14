@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MoneyManager.Server.Presentation.ActionFilters
 {
-    public class ValidationFilterAttribute : IActionFilter
+    public class ValidationDtoFilterAttribute : IActionFilter
     {
-        public ValidationFilterAttribute() { }
+        public ValidationDtoFilterAttribute() { }
 
         public void OnActionExecuting(ActionExecutingContext context)
         {

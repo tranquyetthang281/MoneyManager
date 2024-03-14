@@ -44,8 +44,22 @@ namespace MoneyManager.Server.Service
             return userWallet;
         }
 
+        private async Task CheckIfUserIsAllowedUpdateWallet(Guid userId, Guid walletId, bool trackChanges)
+        {
+            var userWallet = await GetUserWalletAndCheckIfUserIsAllowedEnterWallet(userId, walletId, trackChanges);
+            if (!userWallet.IsOwner)
+                throw new WalletUpdateForbiddenException(userId, walletId);
+        }
+
         private WalletDto MapFromWalletAndUserWalletToWalletDto(Wallet wallet, UserWallet userWallet)
              => _mapper.Map<WalletDto>(new Tuple<Wallet, UserWallet>(wallet, userWallet));
+
+        private async Task CheckIfTwoUsersAreFriends(Guid userId, Guid friendId, bool trackChanges)
+        {
+            var friendship = await _repository.Friendship.GetAnyFriendshipAsync(userId, friendId, trackChanges);
+            if (friendship is null || !friendship.IsAccepted)
+                throw new UsersAreNotFriendsException(userId, friendId);
+        }
 
         public async Task<IEnumerable<WalletDto>> GetAllWalletsForUserAsync(Guid userId, bool trackChanges)
         {
@@ -67,15 +81,15 @@ namespace MoneyManager.Server.Service
         public async Task<WalletDto> CreateWalletForUserAsync(Guid userId, WalletForCreationDto walletDto, bool trackChanges)
         {
             await CheckIfUserExists(userId, trackChanges);
-         
+
             var wallet = _mapper.Map<Wallet>(walletDto);
             _repository.Wallet.CreateWallet(wallet);
-          
+
             var userWallet = new UserWallet
             {
                 UserId = userId,
                 WalletId = wallet.Id,
-                Balance = wallet.InitBalance,
+                Balance = wallet.Balance,
                 IsOwner = true
             };
             _repository.UserWallet.CreateUserWallet(userWallet);
@@ -84,6 +98,45 @@ namespace MoneyManager.Server.Service
 
             var walletToReturn = MapFromWalletAndUserWalletToWalletDto(wallet, userWallet);
             return walletToReturn;
+        }
+
+        public async Task UpdateWalletNameForUserAsync
+            (Guid userId, Guid walletId, WalletForUpdateNameDto walletDto, bool userTrackChanges, bool walletTrackChanges)
+        {
+            await CheckIfUserExists(userId, userTrackChanges);
+            var wallet = await GetWalletAndCheckIfItExists(walletId, walletTrackChanges);
+            await CheckIfUserIsAllowedUpdateWallet(userId, walletId, userTrackChanges);
+            _mapper.Map(walletDto, wallet);
+            await _repository.SaveAsync();
+        }
+
+        public async Task AddFriendToWalletAsync(Guid userId, Guid walletId, Guid friendId, bool trackChanges)
+        {
+            await CheckIfUserExists(userId, trackChanges);
+            var wallet = await GetWalletAndCheckIfItExists(walletId, trackChanges);
+            await CheckIfUserIsAllowedUpdateWallet(userId, walletId, trackChanges);
+            await CheckIfUserExists(friendId, trackChanges);
+            await CheckIfTwoUsersAreFriends(userId, friendId, trackChanges);
+            var userWallet = await _repository.UserWallet.GetUserWalletAsync(friendId, walletId, trackChanges);
+            if (userWallet is null)
+            {
+                var newUserWallet = new UserWallet
+                {
+                    UserId = friendId,
+                    WalletId = wallet.Id,
+                    Balance = 0,
+                    IsOwner = false
+                };
+                _repository.UserWallet.CreateUserWallet(newUserWallet);
+            }
+        }
+
+        public async Task DeleteWalletForUserAsync(Guid userId, Guid walletId, bool trackChanges)
+        {
+            await CheckIfUserExists(userId, trackChanges);
+            var wallet = await GetWalletAndCheckIfItExists(walletId, trackChanges);
+            await CheckIfUserIsAllowedUpdateWallet(userId, walletId, trackChanges);
+            _repository.Wallet.DeleteWallet(wallet);
         }
     }
 }

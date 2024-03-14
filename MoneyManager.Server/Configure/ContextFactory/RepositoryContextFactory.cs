@@ -14,8 +14,7 @@ namespace MoneyManager.Server.ContextFactory
                 .Build();
 
             var builder = new DbContextOptionsBuilder<RepositoryContext>()
-                .UseSqlServer(configuration.GetConnectionString("sqlConnection"),
-                    b => b.MigrationsAssembly("MoneyManager"));
+                .UseSqlServer(configuration.GetConnectionString("sqlConnection"));
 
             return new RepositoryContext(builder.Options);
         }

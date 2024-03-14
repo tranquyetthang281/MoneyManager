@@ -1,6 +1,5 @@
 ﻿using MoneyManager.Server.Entities.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using Repository.Configuration;
 using MoneyManager.Server.Repository.Configuration;
 

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using MoneyManager.Server.Entities.Models;
+using MoneyManager.Server.Shared.DataTransferObjects.Friend;
 using MoneyManager.Server.Shared.DataTransferObjects.User;
 using MoneyManager.Server.Shared.DataTransferObjects.Wallet;
 
@@ -11,6 +13,7 @@ namespace MoneyManager.Server.Utility
         {
             CreateMapForUser();
             CreateMapForWallet();
+            CreateMapForFriend();
         }
 
         private void CreateMapForUser()
@@ -33,6 +36,19 @@ namespace MoneyManager.Server.Utility
           
             CreateMap<WalletForCreationDto, Wallet>()
                 .ForMember(w => w.Balance, opt => opt.MapFrom(source => source.InitBalance));
+
+            CreateMap<WalletForUpdateNameDto, User>();
+        }
+
+        private void CreateMapForFriend()
+        {
+            CreateMap<(User user, int status), FriendDto>()
+                .ForMember(dto => dto.Id, opt => opt.MapFrom(source => source.user.Id))
+                .ForMember(dto => dto.Name, opt => opt.MapFrom(source => source.user.Name))
+                .ForMember(dto => dto.Email, opt => opt.MapFrom(source => source.user.Email))
+                .ForMember(dto => dto.BirthDate, opt => opt.MapFrom(source => source.user.BirthDate))
+                .ForMember(dto => dto.Avatar, opt => opt.MapFrom(source => source.user.Avatar))
+                .ForMember(dto => dto.status, opt => opt.MapFrom(source => source.status));
         }
     }
 }

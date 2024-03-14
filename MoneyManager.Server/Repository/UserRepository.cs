@@ -10,11 +10,14 @@ namespace MoneyManager.Server.Repository
         {
         }
 
-        public async Task<IEnumerable<User>> GetAllUsersAsync(bool trackChanges) =>
-            await FindAll(trackChanges).ToListAsync();
+        public async Task<IEnumerable<User>> GetAllUsersAsync(bool trackChanges)
+            => await FindAll(trackChanges).ToListAsync();
 
-        public async Task<User?> GetUserAsync(Guid id, bool trackChanges) =>
-            await FindByCondition(c => c.Id.Equals(id), trackChanges).SingleOrDefaultAsync();
+        public async Task<User?> GetUserAsync(Guid id, bool trackChanges) 
+            => await FindByCondition(u => u.Id == id, trackChanges).SingleOrDefaultAsync();
+
+        public async Task<IEnumerable<User>> GetUsersAsync(IEnumerable<Guid> ids, bool trackChanges) 
+            => await FindByCondition(u => ids.Contains(u.Id), trackChanges).ToListAsync();
 
         public void CrateUser(User user) => Create(user);
 
