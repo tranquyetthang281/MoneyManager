@@ -8,7 +8,7 @@ namespace MoneyManager.Server.Contracts.RepositoryContracts
 
         Task<User?> GetUserAsync(Guid id, bool trackChanges);
 
-        Task<IEnumerable<User>> GetUsersAsync(IEnumerable<Guid> ids, bool trackChanges);
+        Task<IEnumerable<User>> GetManyUsersAsync(IEnumerable<Guid> ids, bool trackChanges);
 
         void CrateUser(User user);
 

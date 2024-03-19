@@ -2,6 +2,8 @@
 using MoneyManager.Server.Contracts;
 using MoneyManager.Server.Contracts.ServiceContracts;
 using AutoMapper;
+using MoneyManager.Server.Shared.DataTransferObjects.Category;
+using System.Collections;
 
 namespace MoneyManager.Server.Service
 {
@@ -16,6 +18,18 @@ namespace MoneyManager.Server.Service
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
+        }
+
+        public async Task<IEnumerable<CategoryDto>> GetAllCategoriesAsync(bool trackChanges)
+        {
+            var categories = await _repository.Category.GetAllCategoriesAsync(trackChanges);
+            var categoriesDto = _mapper.Map<IEnumerable<CategoryDto>>(categories);
+            return categoriesDto;
+        }
+
+        public async Task<IEnumerable<CategoryDto>> GetInflowCategories(bool trackChanges)
+        {
+
         }
     }
 }

@@ -24,8 +24,8 @@ namespace MoneyManager.Server.Service
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync(bool trackChanges)
         {
             var users = await _repository.User.GetAllUsersAsync(trackChanges);
-            var usersDto = _mapper.Map<IEnumerable<UserDto>>(users);
-            return usersDto;
+            var userDtos = _mapper.Map<IEnumerable<UserDto>>(users);
+            return userDtos;
         }
 
         public async Task<UserDto> GetUserAsync(Guid id, bool trackChanges)
@@ -37,12 +37,11 @@ namespace MoneyManager.Server.Service
             return userDto;
         }
 
-        private async Task<User> GetUserAndCheckIfItExists(Guid id, bool trackChanges)
+        public async Task CheckIfUserExists(Guid userId, bool trackChanges)
         {
-            var user = await _repository.User.GetUserAsync(id, trackChanges);
+            var user = await _repository.User.GetUserAsync(userId, trackChanges);
             if (user is null)
-                throw new UserNotFoundException(id);
-            return user;
+                throw new UserNotFoundException(userId);
         }
 
         public async Task<UserDto> CreateUserAsync(UserForCreationDto userDto)
@@ -79,6 +78,14 @@ namespace MoneyManager.Server.Service
         {
             _mapper.Map(userToPatch, userEntity);
             await _repository.SaveAsync();
+        }
+
+        private async Task<User> GetUserAndCheckIfItExists(Guid id, bool trackChanges)
+        {
+            var user = await _repository.User.GetUserAsync(id, trackChanges);
+            if (user is null)
+                throw new UserNotFoundException(id);
+            return user;
         }
     }
 }

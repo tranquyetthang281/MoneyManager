@@ -1,5 +1,6 @@
-﻿using MoneyManager.Server.Contracts.RepositoryContracts;
-using System.Transactions;
+﻿using Microsoft.EntityFrameworkCore;
+using MoneyManager.Server.Contracts.RepositoryContracts;
+using MoneyManager.Server.Entities.Models;
 
 namespace MoneyManager.Server.Repository
 {
@@ -8,5 +9,15 @@ namespace MoneyManager.Server.Repository
         public TransactionRepository(RepositoryContext repositoryContext) : base(repositoryContext)
         {
         }
+
+        public async Task<IEnumerable<Transaction>> GetAllTransactionsInMonthForWalletAsync
+            (Guid walletId, DateTime time, bool trackChanges)
+            => await FindByCondition(tr => tr.WalletId == walletId 
+                            && tr.Date.Month == time.Month && tr.Date.Year == time.Year, trackChanges)
+                    .ToListAsync();
+
+        public void CreateTransaction(Transaction transaction) => Create(transaction);
+
+        public void DeleteTransaction(Transaction transaction) => Delete(transaction);
     }
 }

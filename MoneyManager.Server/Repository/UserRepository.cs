@@ -16,7 +16,7 @@ namespace MoneyManager.Server.Repository
         public async Task<User?> GetUserAsync(Guid id, bool trackChanges) 
             => await FindByCondition(u => u.Id == id, trackChanges).SingleOrDefaultAsync();
 
-        public async Task<IEnumerable<User>> GetUsersAsync(IEnumerable<Guid> ids, bool trackChanges) 
+        public async Task<IEnumerable<User>> GetManyUsersAsync(IEnumerable<Guid> ids, bool trackChanges) 
             => await FindByCondition(u => ids.Contains(u.Id), trackChanges).ToListAsync();
 
         public void CrateUser(User user) => Create(user);

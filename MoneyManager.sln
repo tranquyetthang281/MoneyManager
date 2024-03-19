@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoneyManager.Server", "MoneyManager.Server\MoneyManager.Server.csproj", "{F72DD857-846E-4B03-AF85-C95780C3AFA0}"
-EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "moneymanager.client", "moneymanager.client\moneymanager.client.esproj", "{B9C013FA-7973-4B9F-97FC-D8975A41ED19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoneyManager.Server", "MoneyManager.Server\MoneyManager.Server.csproj", "{09AC4383-BCF5-482A-B5D8-55B283CD2D04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,16 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F72DD857-846E-4B03-AF85-C95780C3AFA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F72DD857-846E-4B03-AF85-C95780C3AFA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F72DD857-846E-4B03-AF85-C95780C3AFA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F72DD857-846E-4B03-AF85-C95780C3AFA0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B9C013FA-7973-4B9F-97FC-D8975A41ED19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B9C013FA-7973-4B9F-97FC-D8975A41ED19}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B9C013FA-7973-4B9F-97FC-D8975A41ED19}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{B9C013FA-7973-4B9F-97FC-D8975A41ED19}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B9C013FA-7973-4B9F-97FC-D8975A41ED19}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B9C013FA-7973-4B9F-97FC-D8975A41ED19}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{09AC4383-BCF5-482A-B5D8-55B283CD2D04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09AC4383-BCF5-482A-B5D8-55B283CD2D04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09AC4383-BCF5-482A-B5D8-55B283CD2D04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09AC4383-BCF5-482A-B5D8-55B283CD2D04}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

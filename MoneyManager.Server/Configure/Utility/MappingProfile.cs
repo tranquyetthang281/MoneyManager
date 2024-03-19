@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using MoneyManager.Server.Entities.Models;
 using MoneyManager.Server.Shared.DataTransferObjects.Friend;
+using MoneyManager.Server.Shared.DataTransferObjects.Transaction;
 using MoneyManager.Server.Shared.DataTransferObjects.User;
 using MoneyManager.Server.Shared.DataTransferObjects.Wallet;
 
@@ -14,6 +14,7 @@ namespace MoneyManager.Server.Utility
             CreateMapForUser();
             CreateMapForWallet();
             CreateMapForFriend();
+            CreateMapForTransaction();
         }
 
         private void CreateMapForUser()
@@ -26,18 +27,18 @@ namespace MoneyManager.Server.Utility
 
         private void CreateMapForWallet()
         {
-            CreateMap<Tuple<Wallet, UserWallet>, WalletDto>()
-                .ForMember(dto => dto.Id, opt => opt.MapFrom(source => source.Item1.Id))
-                .ForMember(dto => dto.Name, opt => opt.MapFrom(source => source.Item1.Name))
-                .ForMember(dto => dto.Balance, opt => opt.MapFrom(source => source.Item1.Balance))
-                .ForMember(dto => dto.InitBalance, opt => opt.MapFrom(source => source.Item1.InitBalance))
-                .ForMember(dto => dto.UserBalance, opt => opt.MapFrom(source => source.Item2.Balance))
-                .ForMember(dto => dto.IsOwner, opt => opt.MapFrom(source => source.Item2.IsOwner));
+            CreateMap<UserWallet, WalletDto>()
+                .ForMember(dto => dto.Id, opt => opt.MapFrom(source => source.Wallet!.Id))
+                .ForMember(dto => dto.Name, opt => opt.MapFrom(source => source.Wallet!.Name))
+                .ForMember(dto => dto.Balance, opt => opt.MapFrom(source => source.Wallet!.Balance))
+                .ForMember(dto => dto.InitBalance, opt => opt.MapFrom(source => source.Wallet!.InitBalance))
+                .ForMember(dto => dto.UserBalance, opt => opt.MapFrom(source => source.Balance))
+                .ForMember(dto => dto.IsOwner, opt => opt.MapFrom(source => source.IsOwner));
           
             CreateMap<WalletForCreationDto, Wallet>()
                 .ForMember(w => w.Balance, opt => opt.MapFrom(source => source.InitBalance));
 
-            CreateMap<WalletForUpdateNameDto, User>();
+            CreateMap<WalletForUpdateNameDto, Wallet>();
         }
 
         private void CreateMapForFriend()
@@ -49,6 +50,11 @@ namespace MoneyManager.Server.Utility
                 .ForMember(dto => dto.BirthDate, opt => opt.MapFrom(source => source.user.BirthDate))
                 .ForMember(dto => dto.Avatar, opt => opt.MapFrom(source => source.user.Avatar))
                 .ForMember(dto => dto.status, opt => opt.MapFrom(source => source.status));
+        }
+
+        private void CreateMapForTransaction()
+        {
+            CreateMap<Transaction, TransactionDto>();
         }
     }
 }

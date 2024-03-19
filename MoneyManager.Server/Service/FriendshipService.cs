@@ -22,38 +22,35 @@ namespace MoneyManager.Server.Service
             _mapper = mapper;
         }
 
-        private async Task CheckIfUserExists(Guid userId, bool trackChanges)
+        public async Task<IEnumerable<UserDto>> GetAllFriendsOfUserAsync(Guid userId, bool trackChanges)
         {
-            var user = await _repository.User.GetUserAsync(userId, trackChanges);
-            if (user is null)
-                throw new UserNotFoundException(userId);
+            await CheckIfUserExists(userId, trackChanges);
+            var friendships = await _repository.Friendship.GetFriendshipsOfUserAsync(userId, isAccepted: true, trackChanges);
+            var friendIds = friendships.Select(f => f.UserId == userId ? f.FriendId : f.UserId);
+            var friends = await _repository.User.GetManyUsersAsync(friendIds, trackChanges);
+            var friendDtos = _mapper.Map<IEnumerable<UserDto>>(friends);
+            return friendDtos;
         }
 
-        public async Task<IEnumerable<UserDto>> GetAllFriendsOfUserAsyncAsync(Guid id, bool trackChanges)
+        public async Task<IEnumerable<UserDto>> GetAllFriendRequestsFromUserAsync(Guid userId, bool trackChanges)
         {
-            await CheckIfUserExists(id, trackChanges);
-            var friendIds = await _repository.Friendship.GetAllFriendsOfUserAsync(id, trackChanges);
-            var friends = await _repository.User.GetUsersAsync(friendIds, trackChanges);
-            var friendsDto = _mapper.Map<IEnumerable<UserDto>>(friends);
-            return friendsDto;
+
+            await CheckIfUserExists(userId, trackChanges);
+            var friendships = await _repository.Friendship.GetFriendshipsFromUser(userId, isAccepted: false, trackChanges);
+            var friendIds = friendships.Select(f => f.FriendId);
+            var friends = await _repository.User.GetManyUsersAsync(friendIds, trackChanges);
+            var friendDtos = _mapper.Map<IEnumerable<UserDto>>(friends);
+            return friendDtos;
         }
 
-        public async Task<IEnumerable<UserDto>> GetAllFriendRequestsFromUserAsync(Guid id, bool trackChanges)
+        public async Task<IEnumerable<UserDto>> GetAllFriendRequestsForUserAsync(Guid uerId, bool trackChanges)
         {
-            await CheckIfUserExists(id, trackChanges);
-            var friendIds = await _repository.Friendship.GetAllFriendRequestsFromUserAsync(id, trackChanges);
-            var friends = await _repository.User.GetUsersAsync(friendIds, trackChanges);
-            var friendsDto = _mapper.Map<IEnumerable<UserDto>>(friends);
-            return friendsDto;
-        }
-
-        public async Task<IEnumerable<UserDto>> GetAllFriendRequestsForUserAsync(Guid id, bool trackChanges)
-        {
-            await CheckIfUserExists(id, trackChanges);
-            var friendIds = await _repository.Friendship.GetAllFriendRequestsForUserAsync(id, trackChanges);
-            var friends = await _repository.User.GetUsersAsync(friendIds, trackChanges);
-            var friendsDto = _mapper.Map<IEnumerable<UserDto>>(friends);
-            return friendsDto;
+            await CheckIfUserExists(uerId, trackChanges);
+            var friendships = await _repository.Friendship.GetFriendshipsFromFriends(uerId, isAccepted: false, trackChanges);
+            var friendIds = friendships.Select(f => f.FriendId);
+            var friends = await _repository.User.GetManyUsersAsync(friendIds, trackChanges);
+            var friendDtos = _mapper.Map<IEnumerable<UserDto>>(friends);
+            return friendDtos;
         }
 
         public async Task AcceptFriendRequestAsync(Guid userId, Guid friendId, bool userTrackChanges, bool friendshipTrackChanges)
@@ -76,7 +73,8 @@ namespace MoneyManager.Server.Service
         {
             await CheckIfUserExists(userId, trackChanges);
             await CheckIfUserExists(friendId, trackChanges);
-            var friendship = await _repository.Friendship.GetAnyFriendshipAsync(userId, friendId, trackChanges);
+
+            var friendship = await _repository.Friendship.GetFriendshipOfTwoUsersAsync(userId, friendId, trackChanges);
             if (friendship is null)
             {
                 var createdFriendship = new Friendship
@@ -94,9 +92,9 @@ namespace MoneyManager.Server.Service
         {
             await CheckIfUserExists(userId, trackChanges);
             await CheckIfUserExists(friendId, trackChanges);
-           
-            var friendship = await _repository.Friendship.GetAnyFriendshipAsync(userId, friendId, trackChanges);
-           
+
+            var friendship = await _repository.Friendship.GetFriendshipOfTwoUsersAsync(userId, friendId, trackChanges);
+
             if (friendship is null)
                 return FriendshipStatus.None;
 
@@ -108,5 +106,14 @@ namespace MoneyManager.Server.Service
 
             return FriendshipStatus.Waiting;
         }
+
+        #region Private methods
+        private async Task CheckIfUserExists(Guid userId, bool trackChanges)
+        {
+            var user = await _repository.User.GetUserAsync(userId, trackChanges);
+            if (user is null)
+                throw new UserNotFoundException(userId);
+        }
+        #endregion
     }
 }

@@ -48,7 +48,7 @@ namespace MoneyManager.Server.Presentation.Controllers
         [ServiceFilter(typeof(ValidationDtoFilterAttribute))]
         public async Task<IActionResult> AddFriendToWallet(Guid userId, Guid walletId, [FromBody] FriendForAddToWalletDto friendDto)
         {
-            await _service.WalletService.AddFriendToWalletAsync(userId, walletId, friendDto.FriendID, trackChanges: false);
+            await _service.WalletService.AddFriendToWalletAsync(userId, walletId, friendDto.FriendId, trackChanges: false);
             return NoContent();
         }
     }

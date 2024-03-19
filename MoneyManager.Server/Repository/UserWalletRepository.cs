@@ -12,7 +12,11 @@ namespace MoneyManager.Server.Repository
 
         public async Task<UserWallet?> GetUserWalletAsync(Guid userId, Guid walletId, bool trackChanges)
             => await FindByCondition(uw => uw.UserId == userId && uw.WalletId == walletId, trackChanges)
-                    .SingleOrDefaultAsync();
+                    .Include(uw => uw.Wallet).SingleOrDefaultAsync();
+
+        public async Task<IEnumerable<UserWallet>> GetManyUserWalletsAsync(Guid userId, bool trackChanges)
+            => await FindByCondition(uw => uw.UserId == userId, trackChanges)
+                    .Include(uw => uw.Wallet).ToListAsync();
 
         public void CreateUserWallet(UserWallet userWallet) => Create(userWallet);
 

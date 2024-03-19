@@ -4,9 +4,11 @@ namespace MoneyManager.Server.Contracts.RepositoryContracts
 {
     public interface IUserWalletRepository
     {
-        void CreateUserWallet(UserWallet userWallet);
-
         Task<UserWallet?> GetUserWalletAsync(Guid userId, Guid walletId, bool trackChanges);
+
+        Task<IEnumerable<UserWallet>> GetManyUserWalletsAsync(Guid userId, bool trackChanges);
+
+        void CreateUserWallet(UserWallet userWallet);
 
         void DeleteUserWallet(UserWallet userWallet);
     }

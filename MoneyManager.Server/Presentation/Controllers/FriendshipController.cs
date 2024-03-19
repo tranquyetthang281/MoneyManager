@@ -13,36 +13,32 @@ namespace MoneyManager.Server.Presentation.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllFriendsOfUser(Guid userId)
         {
-            var friends = await _service.FriendshipService.GetAllFriendsOfUserAsyncAsync(userId, trackChanges: false);
+            var friends = await _service.FriendshipService.GetAllFriendsOfUserAsync(userId, trackChanges: false);
             return Ok(friends);
         }
 
-        [HttpGet]
-        [Route("requested")]
+        [HttpGet("requested")]
         public async Task<IActionResult> GetAllFriendRequestsFromUser(Guid userId)
         {
             var friends = await _service.FriendshipService.GetAllFriendRequestsFromUserAsync(userId, trackChanges: false);
             return Ok(friends);
         }
 
-        [HttpGet]
-        [Route("waiting")]
+        [HttpGet("waiting")]
         public async Task<IActionResult> GetAllFriendRequestsForUser(Guid userId)
         {
             var friends = await _service.FriendshipService.GetAllFriendRequestsForUserAsync(userId, trackChanges: false);
             return Ok(friends);
         }
 
-        [HttpGet]
-        [Route("requested/{friendId:guid}")]
+        [HttpGet("requested/{friendId:guid}")]
         public async Task<IActionResult> SendFriendRequest(Guid userId, Guid friendId)
         {
             await _service.FriendshipService.SendFriendRequestAsync(userId, friendId, trackChanges: false);
             return NoContent();
         }
 
-        [HttpPut]
-        [Route("waiting/{friendId:guid}")]
+        [HttpPut("waiting/{friendId:guid}")]
         public async Task<IActionResult> AcceptFriendRequest(Guid userId, Guid friendId)
         {
             await _service.FriendshipService.AcceptFriendRequestAsync
