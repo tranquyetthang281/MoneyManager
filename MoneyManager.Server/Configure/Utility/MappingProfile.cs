@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MoneyManager.Server.Entities.Models;
+using MoneyManager.Server.Shared.DataTransferObjects.Category;
 using MoneyManager.Server.Shared.DataTransferObjects.Friend;
 using MoneyManager.Server.Shared.DataTransferObjects.Transaction;
 using MoneyManager.Server.Shared.DataTransferObjects.User;
@@ -15,12 +16,14 @@ namespace MoneyManager.Server.Utility
             CreateMapForWallet();
             CreateMapForFriend();
             CreateMapForTransaction();
+            CreateMapForCategory();
         }
 
         private void CreateMapForUser()
         {
             CreateMap<User, UserDto>();
-            CreateMap<UserForCreationDto, User>();
+            CreateMap<UserForRegistrationDto, User>()
+                .ForMember(user => user.UserName, opt => opt.MapFrom(source => source.Email));
             CreateMap<UserForUpdateDto, User>();
             CreateMap<UserForUpdateDto, User>().ReverseMap();
         }
@@ -37,8 +40,6 @@ namespace MoneyManager.Server.Utility
           
             CreateMap<WalletForCreationDto, Wallet>()
                 .ForMember(w => w.Balance, opt => opt.MapFrom(source => source.InitBalance));
-
-            CreateMap<WalletForUpdateNameDto, Wallet>();
         }
 
         private void CreateMapForFriend()
@@ -55,6 +56,15 @@ namespace MoneyManager.Server.Utility
         private void CreateMapForTransaction()
         {
             CreateMap<Transaction, TransactionDto>();
+            CreateMap<TransactionForCreationDto, Transaction>();
+            CreateMap<TransactionForUpdateDto, Transaction>();
+            CreateMap<TransactionForUpdateDto, Transaction>().ReverseMap();
+        }
+
+        private void CreateMapForCategory()
+        {
+            CreateMap<Category, CategoryDto>();
+            CreateMap<CategoryForCreationDto, Category>();
         }
     }
 }

@@ -7,6 +7,8 @@ namespace MoneyManager.Server.Contracts.ServiceContracts
     {
         Task<IEnumerable<WalletDto>> GetAllWalletsForUserAsync(Guid userId, bool trackChanges);
 
+        Task<IEnumerable<WalletDto>> GetAllWalletsWithTotalForUserAsync(Guid userId, bool trackChanges);
+
         Task<WalletDto> GetWalletForUserAsync(Guid userId, Guid walletId, bool trackChanges);
 
         Task<WalletDto> CreateWalletForUserAsync(Guid userId, WalletForCreationDto walletDto, bool trackChanges);

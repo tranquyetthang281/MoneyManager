@@ -1,18 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MoneyManager.Server.Entities.Models
 {
-    public class User
+    [Table("ApplicationUser")]
+    public class User : IdentityUser<Guid>
     {
-        public Guid Id { get; set; }
-        
-        [Required(ErrorMessage = "Email is a required field.")]
-        public string? Email { get; set; }
-
-        [Required(ErrorMessage = "Password is a required field.")]
-        public string? Password { get; set; }
-
         [Required(ErrorMessage = "User name is a required field.")]
         public string? Name { get; set; }    
 

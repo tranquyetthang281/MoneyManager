@@ -1,90 +1,41 @@
 import {
     Avatar, ClickAwayListener, Divider, List, ListItem,
-    ListItemAvatar, ListItemIcon, ListItemText, Stack, Tooltip
+    ListItemAvatar, ListItemIcon, ListItemText, Stack, Tooltip, Typography
 } from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
-import { Fragment, memo, useState } from 'react';
+import { Fragment, memo, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './WalletSelection.module.scss';
-import { CURRENCY_UNIT } from '../../utils/constants';
+import currencyFormatter from '../../utils/currencyFormatter';
 
 const cx = classNames.bind(styles)
 
-const listWallets = [
-    {
-        id: 1,
-        name: "Total",
-        icon: "total.png",
-        balance: "+196,000"
-    },
-    {
-        id: 2,
-        name: "Total2",
-        icon: "total.png",
-        balance: "+196,000"
-    },
-    {
-        id: 3,
-        name: "Total3",
-        icon: "total.png",
-        balance: "+196,000"
-    },
-    {
-        id: 8,
-        name: "Total3",
-        icon: "total.png",
-        balance: "+196,000"
-    },
-    {
-        id: 4,
-        name: "Total3",
-        icon: "total.png",
-        balance: "+196,000"
-    },
-    {
-        id: 5,
-        name: "Total3",
-        icon: "total.png",
-        balance: "+196,000"
-    },
-    {
-        id: 6,
-        name: "Total3",
-        icon: "total.png",
-        balance: "+196,000"
-    },
-    ,
-    {
-        id: 7,
-        name: "Total3",
-        icon: "total.png",
-        balance: "+196,000"
-    }
-]
+function WalletSelection({ listWallets, selectedWallet, selectWallet }) {
 
-function WalletSelection() {
-
-    const [currentWallet, setCurrentWallet] = useState(listWallets[0])
     const [isShowingSelection, setIsShowingSelection] = useState(false)
+    const negative = useNavigate()
 
     return (
-
         <ClickAwayListener onClickAway={() => setIsShowingSelection(false)} >
             <Stack>
-                <Tooltip title={<h2>Select Wallet</h2>} arrow>
-                    <Stack direction="row" className={cx('wallet')}
-                        onClick={() => setIsShowingSelection(prev => !prev)}>
-                        <Avatar className={cx('icon')} src={currentWallet.icon} />
-                        <Stack direction="column" className={cx('menu')}>
-                            <span className={cx('name', 'primary-text')}>
-                                {currentWallet.name} &#9662;
-                            </span>
-                            <span className={cx('balance')}>
-                                {currentWallet.balance} <u>{CURRENCY_UNIT}</u>
-                            </span>
+                {
+                    selectedWallet &&
+                    <Tooltip title={<h2>Select Wallet</h2>} arrow>
+                        <Stack direction="row" className={cx('wallet')}
+                            onClick={() => setIsShowingSelection(prev => !prev)}>
+                            <Avatar className={cx('icon')} src={''} />
+                            <Stack direction="column" className={cx('menu')}>
+                                <span className={cx('name', 'primary-text')}>
+                                    {selectedWallet.name} &#9662;
+                                </span>
+                                <span className={cx('balance')}>
+                                    {currencyFormatter(selectedWallet.userBalance)}
+                                </span>
+                            </Stack>
                         </Stack>
-                    </Stack>
-                </Tooltip>
+                    </Tooltip>
+                }
 
                 {
                     isShowingSelection &&
@@ -95,37 +46,53 @@ function WalletSelection() {
                         <List sx={{ width: '100%', p: 0, overflowY: "auto" }}>
                             {
                                 listWallets.map((wallet, index) => {
-                                    const isCurrent = wallet.id === currentWallet.id
+                                    const isSelected = wallet.id === selectedWallet.id
                                     return <Fragment key={index}>
                                         <ListItem
                                             className={cx('wallet-item')}
                                             onClick={() => {
-                                                setCurrentWallet(wallet)
+                                                selectWallet(wallet)
                                                 setIsShowingSelection(false)
+                                                if (index === 0) {
+                                                    negative('/')
+                                                }
+                                                else {
+                                                    negative(`/wallet/${wallet.id}`)
+                                                }
                                             }}>
                                             <ListItemAvatar>
-                                                <Avatar src={wallet.icon} />
+                                                <Avatar src={''} />
                                             </ListItemAvatar>
                                             <ListItemText
                                                 primary={
-                                                    <span className={cx('name-item', isCurrent ? 'primary-text' : null)}>
+                                                    <span className={cx('name-item', isSelected ? 'primary-text' : null)}>
                                                         {wallet.name}
                                                     </span>
                                                 }
                                                 secondary={
                                                     <span className={cx('balance-item')}>
-                                                        {wallet.balance} <u>{CURRENCY_UNIT}</u>
+                                                        {currencyFormatter(wallet.userBalance)}
                                                     </span>
                                                 }
                                             />
                                             {
-                                                isCurrent &&
+                                                isSelected &&
                                                 <ListItemIcon>
                                                     <DoneIcon color="success" sx={{ fontSize: 25 }} />
                                                 </ListItemIcon>
                                             }
                                         </ListItem>
                                         <Divider component="li" />
+
+                                        {
+                                            index == 0 &&
+                                            <Fragment>
+                                                <Typography sx={{ fontSize: "14px", m: "10px 10px 10px 20px" }}>
+                                                    Included in Total
+                                                </Typography>
+                                                <Divider />
+                                            </Fragment>
+                                        }
                                     </Fragment>
                                 })
                             }

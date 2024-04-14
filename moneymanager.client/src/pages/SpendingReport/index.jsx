@@ -23,7 +23,7 @@ const outflowData = [
 
 function SpendingReport() {
     const [isShowingDetail, setIsShowingDetail] = useState(false)
-    const openCloseDetail = useCallback((open) => setIsShowingDetail(open))
+    const openCloseDetail = useCallback((open) => setIsShowingDetail(open), [])
     const monthData = useMemo(() => Array.from({ length: 30 }, (_, i) => i + 1), [])
     const moneyFormatter = (value) => `${value}k ${CURRENCY_UNIT}`;
 

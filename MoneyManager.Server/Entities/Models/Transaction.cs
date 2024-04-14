@@ -19,16 +19,21 @@ namespace MoneyManager.Server.Entities.Models
         public Guid CategoryId { get; set; }
 
         [Required(ErrorMessage = "CreatorId is a required field.")]
-        [ForeignKey(nameof(User))]
+        [ForeignKey(nameof(Creator))]
         public Guid CreatorId { get; set; }
 
-        [ForeignKey(nameof(User))]
+        [ForeignKey(nameof(TransferredUser))]
         public Guid? TransferredUserId { get; set; }
     
         [Required(ErrorMessage = "WalletId is a required field.")]
+        [ForeignKey(nameof(Wallet))]
         public Guid WalletId { get; set; }
 
+        [ForeignKey(nameof(TransferredWallet))]
         public Guid? TransferredWalletId { get; set; }
+
+        [ForeignKey(nameof(TransferredTransaction))]
+        public Guid? TransferredTransactionId { get; set; }
 
         public virtual Category? Category { get; set; }
 
@@ -39,5 +44,7 @@ namespace MoneyManager.Server.Entities.Models
         public virtual Wallet? Wallet { get; set; }
 
         public virtual Wallet? TransferredWallet { get; set; }
+
+        public virtual Transaction? TransferredTransaction {  get; set; }
     }
 }

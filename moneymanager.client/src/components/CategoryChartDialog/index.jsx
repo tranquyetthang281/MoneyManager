@@ -38,7 +38,7 @@ function CategoryChartDialog({ open, openCloseDialog, inflow }) {
                 <CloseIcon sx={{ width: 24, height: 24, color: "black" }} />
             </IconButton>
 
-            <DialogTitle sx={{ fontSize: "2.0rem", fontWeight: 600 }}>
+            <DialogTitle sx={{ fontSize: "20px", fontWeight: 600 }}>
                 Salary
             </DialogTitle>
 

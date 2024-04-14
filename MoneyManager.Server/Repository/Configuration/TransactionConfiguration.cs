@@ -32,7 +32,7 @@ namespace MoneyManager.Server.Repository.Configuration
                 },
                 new Transaction
                 {
-                    Id = Guid.NewGuid(),
+                    Id = new Guid("b15d4c05-49b6-410c-bc78-2d54a9991870"),
                     WalletId = new Guid("a11d4c05-49b6-410c-bc78-2d54a9991870"),
                     CreatorId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
                     Date = DateTime.Now,
@@ -45,6 +45,7 @@ namespace MoneyManager.Server.Repository.Configuration
                     WalletId = new Guid("a11d4c05-49b6-410c-bc78-2d54a9991870"),
                     CreatorId = new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"),
                     TransferredUserId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
+                    TransferredTransactionId = new Guid("b15d4c05-49b6-410c-bc78-2d54a9991870"),
                     Date = DateTime.Now,
                     CategoryId = new Guid("d10d4c05-49b6-410c-bc78-2d54a9991870"),
                     Amount = -200000,

@@ -1,0 +1,21 @@
+.wrapper {
+    background-color: var(--white);
+    width: 100%;
+    height: var(--header-height);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .09);
+}
+
+.back-btn {
+    width: var(--header-height);
+    height: var(--header-height);
+    margin: 0 20px 0 80px;
+
+    &:hover {
+        background-color: rgba(45, 184, 76, .1);
+    }
+}
+
+.title {
+    font-size: 25px;
+    font-weight: 600;
+}

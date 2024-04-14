@@ -1,0 +1,64 @@
+.select {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.select-btn {
+    flex-grow: 1;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(160, 160, 160);
+    letter-spacing: 1.5px;
+    padding: 20px 10px;
+    background-color: transparent;
+    border-bottom-style: solid;
+    border-width: 1px;
+
+    &:hover {
+        background-color: rgba(45, 184, 76, .1);
+        cursor: pointer;
+    }
+}
+
+.selected-btn {
+    color: var(--primary);
+    border-width: 3px;
+}
+
+.friend-name {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.friend-email {
+    font-size: 14px;
+}
+
+.add-btn {
+    background-color: var(--primary);
+    color: var(--white);
+    width: 120px;
+    height: 30px;
+    border-radius: 5px;
+    font-size: 14px;
+
+    &:hover {
+        cursor: pointer;
+        background-color: rgba(45, 184, 76, .6);
+    }
+}
+
+.yes-no-btn {
+    color: var(--primary);
+    font-size: 16px;
+
+    &:hover {
+        cursor: pointer;
+        background-color: rgba(45, 184, 76, .1);
+    }
+}
+
+.no-btn {
+    background-color: rgba(45, 184, 76, .2);
+}

@@ -22,6 +22,153 @@ namespace MoneyManager.Server.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("38e7dd9b-f87a-43ba-a3ee-4c4f54cee17f"),
+                            ConcurrencyStamp = "d4be59a2-75ac-45fd-98e2-bc13cca4362e",
+                            Name = "ApplicationUser",
+                            NormalizedName = "APPLICATIONUSER"
+                        },
+                        new
+                        {
+                            Id = new Guid("6c23352f-3c99-4891-bfbd-8a197f150d56"),
+                            ConcurrencyStamp = "65220633-793c-45af-9d89-7041259fb8d7",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        });
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
             modelBuilder.Entity("MoneyManager.Server.Entities.Models.Category", b =>
                 {
                     b.Property<Guid>("Id")
@@ -38,56 +185,6 @@ namespace MoneyManager.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("b11d4c05-49b6-410c-bc78-2d54a9991870"),
-                            Name = "Food and Beverage",
-                            Type = -1
-                        },
-                        new
-                        {
-                            Id = new Guid("b10d4c05-49b6-410c-bc78-2d54a9991870"),
-                            Name = "Salary",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = new Guid("38921507-54eb-4144-bc79-2acba72721ed"),
-                            Name = "Incoming Transfer",
-                            Type = 1
-                        },
-                        new
-                        {
-                            Id = new Guid("cc9c3367-0759-4605-b3fa-68ac93f6cbff"),
-                            Name = "Outgoing Transfer",
-                            Type = -1
-                        },
-                        new
-                        {
-                            Id = new Guid("11df7966-4cf9-4e61-a4f9-44bf05943291"),
-                            Name = "Transfer to wallet",
-                            Type = -2
-                        },
-                        new
-                        {
-                            Id = new Guid("f1fd2612-727e-4c31-b141-5ab01803fc75"),
-                            Name = "Receive from wallet",
-                            Type = 2
-                        },
-                        new
-                        {
-                            Id = new Guid("d10d4c05-49b6-410c-bc78-2d54a9991870"),
-                            Name = "Transfer to friend",
-                            Type = -3
-                        },
-                        new
-                        {
-                            Id = new Guid("d11d4c05-49b6-410c-bc78-2d54a9991870"),
-                            Name = "Receive from friend",
-                            Type = 3
-                        });
                 });
 
             modelBuilder.Entity("MoneyManager.Server.Entities.Models.Friendship", b =>
@@ -106,14 +203,6 @@ namespace MoneyManager.Server.Migrations
                     b.HasIndex("FriendId");
 
                     b.ToTable("Friendships");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
-                            FriendId = new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"),
-                            IsAccepted = true
-                        });
                 });
 
             modelBuilder.Entity("MoneyManager.Server.Entities.Models.Transaction", b =>
@@ -137,6 +226,9 @@ namespace MoneyManager.Server.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("TransferredTransactionId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("TransferredUserId")
                         .HasColumnType("uniqueidentifier");
 
@@ -152,6 +244,8 @@ namespace MoneyManager.Server.Migrations
 
                     b.HasIndex("CreatorId");
 
+                    b.HasIndex("TransferredTransactionId");
+
                     b.HasIndex("TransferredUserId");
 
                     b.HasIndex("TransferredWalletId");
@@ -159,47 +253,6 @@ namespace MoneyManager.Server.Migrations
                     b.HasIndex("WalletId");
 
                     b.ToTable("Transactions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("f40706b7-d44a-4b08-b2b6-bb9046a1b439"),
-                            Amount = -200000m,
-                            CategoryId = new Guid("b11d4c05-49b6-410c-bc78-2d54a9991870"),
-                            CreatorId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
-                            Date = new DateTime(2024, 3, 13, 17, 58, 59, 682, DateTimeKind.Local).AddTicks(9342),
-                            Note = "first trans",
-                            WalletId = new Guid("a10d4c05-49b6-410c-bc78-2d54a9991870")
-                        },
-                        new
-                        {
-                            Id = new Guid("dee6b887-d6ee-4bf2-84cb-2f08a3d729b3"),
-                            Amount = 400000m,
-                            CategoryId = new Guid("b10d4c05-49b6-410c-bc78-2d54a9991870"),
-                            CreatorId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
-                            Date = new DateTime(2024, 3, 13, 17, 58, 59, 682, DateTimeKind.Local).AddTicks(9347),
-                            Note = "second trans",
-                            WalletId = new Guid("a10d4c05-49b6-410c-bc78-2d54a9991870")
-                        },
-                        new
-                        {
-                            Id = new Guid("15d7b142-953a-4d1e-b5f8-29611daffecc"),
-                            Amount = 200000m,
-                            CategoryId = new Guid("d11d4c05-49b6-410c-bc78-2d54a9991870"),
-                            CreatorId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
-                            Date = new DateTime(2024, 3, 13, 17, 58, 59, 682, DateTimeKind.Local).AddTicks(9352),
-                            WalletId = new Guid("a11d4c05-49b6-410c-bc78-2d54a9991870")
-                        },
-                        new
-                        {
-                            Id = new Guid("260dd0e8-9da8-4ba3-a138-2beff708eeb4"),
-                            Amount = -200000m,
-                            CategoryId = new Guid("d10d4c05-49b6-410c-bc78-2d54a9991870"),
-                            CreatorId = new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"),
-                            Date = new DateTime(2024, 3, 13, 17, 58, 59, 682, DateTimeKind.Local).AddTicks(9360),
-                            TransferredUserId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
-                            WalletId = new Guid("a11d4c05-49b6-410c-bc78-2d54a9991870")
-                        });
                 });
 
             modelBuilder.Entity("MoneyManager.Server.Entities.Models.User", b =>
@@ -208,56 +261,74 @@ namespace MoneyManager.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
                     b.Property<string>("Avatar")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
-                            Avatar = "",
-                            BirthDate = new DateTime(2024, 3, 13, 17, 58, 59, 682, DateTimeKind.Local).AddTicks(8769),
-                            Email = "user1@gmail.com",
-                            Name = "User1",
-                            Password = "Password"
-                        },
-                        new
-                        {
-                            Id = new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"),
-                            Avatar = "",
-                            BirthDate = new DateTime(2024, 3, 13, 17, 58, 59, 682, DateTimeKind.Local).AddTicks(8784),
-                            Email = "user2@gmail.com",
-                            Name = "User2",
-                            Password = "Password"
-                        },
-                        new
-                        {
-                            Id = new Guid("2f51bdda-fd03-4083-85cf-04d7af7f9caa"),
-                            Avatar = "",
-                            BirthDate = new DateTime(2024, 3, 13, 17, 58, 59, 682, DateTimeKind.Local).AddTicks(8864),
-                            Email = "user3@gmail.com",
-                            Name = "User3",
-                            Password = "Password"
-                        });
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("MoneyManager.Server.Entities.Models.UserWallet", b =>
@@ -279,29 +350,6 @@ namespace MoneyManager.Server.Migrations
                     b.HasIndex("WalletId");
 
                     b.ToTable("UserWallets");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
-                            WalletId = new Guid("a10d4c05-49b6-410c-bc78-2d54a9991870"),
-                            Balance = 200000m,
-                            IsOwner = true
-                        },
-                        new
-                        {
-                            UserId = new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"),
-                            WalletId = new Guid("a11d4c05-49b6-410c-bc78-2d54a9991870"),
-                            Balance = 200000m,
-                            IsOwner = true
-                        },
-                        new
-                        {
-                            UserId = new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"),
-                            WalletId = new Guid("a11d4c05-49b6-410c-bc78-2d54a9991870"),
-                            Balance = -200000m,
-                            IsOwner = false
-                        });
                 });
 
             modelBuilder.Entity("MoneyManager.Server.Entities.Models.Wallet", b =>
@@ -323,22 +371,57 @@ namespace MoneyManager.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Wallets");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("a10d4c05-49b6-410c-bc78-2d54a9991870"),
-                            Balance = 200000m,
-                            InitBalance = 0m,
-                            Name = "Wallet1"
-                        },
-                        new
-                        {
-                            Id = new Guid("a11d4c05-49b6-410c-bc78-2d54a9991870"),
-                            Balance = 0m,
-                            InitBalance = 0m,
-                            Name = "WalletWithUser2"
-                        });
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+                {
+                    b.HasOne("MoneyManager.Server.Entities.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+                {
+                    b.HasOne("MoneyManager.Server.Entities.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MoneyManager.Server.Entities.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+                {
+                    b.HasOne("MoneyManager.Server.Entities.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MoneyManager.Server.Entities.Models.Friendship", b =>
@@ -374,6 +457,10 @@ namespace MoneyManager.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MoneyManager.Server.Entities.Models.Transaction", "TransferredTransaction")
+                        .WithMany()
+                        .HasForeignKey("TransferredTransactionId");
+
                     b.HasOne("MoneyManager.Server.Entities.Models.User", "TransferredUser")
                         .WithMany()
                         .HasForeignKey("TransferredUserId");
@@ -392,6 +479,8 @@ namespace MoneyManager.Server.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Creator");
+
+                    b.Navigation("TransferredTransaction");
 
                     b.Navigation("TransferredUser");
 

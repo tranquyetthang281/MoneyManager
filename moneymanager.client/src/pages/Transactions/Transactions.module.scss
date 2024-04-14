@@ -21,7 +21,7 @@
 
 .transaction-detail {
     background-color: var(--white);
-    height: 260px;
+    height: 280px;
     box-shadow: 0 3px 24px 0 rgba(0, 0, 0, .2);
     border-radius: 0 0 4px 4px;
     overflow: hidden;
@@ -39,7 +39,7 @@
 
 .time-select-btn {
     flex-grow: 1;
-    font-size: 1.4rem;
+    font-size: 14px;
     font-weight: 600;
     color: rgba(160, 160, 160);
     letter-spacing: 1.5px;
@@ -68,7 +68,7 @@
 
     color: #fff;
     background-color: var(--primary);
-    position: absolute;
+    position: fixed;
     right: 140px;
     bottom: 70px;
     width: 70px;
@@ -86,4 +86,15 @@
 
 .money-out {
     color: #e51c23
+}
+
+.transaction-loading {
+    height: calc(100vh - 60px);
+    width: calc(100% - 80px);
+    position: absolute;
+    left: 80px;
+    top: 80px;
+    z-index: 195;
+    background-color: rgba($color: #fff, $alpha: 0.4);
+    margin-top: -20px;
 }

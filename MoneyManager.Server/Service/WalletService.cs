@@ -29,6 +29,25 @@ namespace MoneyManager.Server.Service
             return walletDtos;
         }
 
+        public async Task<IEnumerable<WalletDto>> GetAllWalletsWithTotalForUserAsync(Guid userId, bool trackChanges)
+        {
+            await CheckIfUserExists(userId, trackChanges);
+            var userWallets = await _repository.UserWallet.GetManyUserWalletsAsync(userId, trackChanges);
+            var walletDtos = _mapper.Map<IList<WalletDto>>(userWallets);
+            var sumUserBalances = walletDtos.Sum(x => x.UserBalance);
+            var totalDto = new WalletDto
+            {
+                Id = Guid.Empty,
+                InitBalance = 0,
+                IsOwner = true,
+                Name = "Total",
+                Balance = sumUserBalances,
+                UserBalance = sumUserBalances,
+            };
+            walletDtos.Insert(0, totalDto);
+            return walletDtos;
+        }
+
         public async Task<WalletDto> GetWalletForUserAsync(Guid userId, Guid walletId, bool trackChanges)
         {
             var userWallet = await GetUserWalletAndCheckIfItExists(userId, walletId, trackChanges);
@@ -65,8 +84,8 @@ namespace MoneyManager.Server.Service
         {
             await CheckIfUserExists(userId, userTrackChanges);
             var wallet = await GetWalletAndCheckIfItExists(walletId, walletTrackChanges);
-            var _ = await GetUserWalletAndCheckIfItExists(userId, walletId, userTrackChanges);
-            _mapper.Map(walletDto, wallet);
+            _ = await GetUserWalletAndCheckIfItExists(userId, walletId, userTrackChanges);
+            wallet.Name = walletDto.Name;
             await _repository.SaveAsync();
         }
 
@@ -74,7 +93,7 @@ namespace MoneyManager.Server.Service
         {
             await CheckIfUserExists(userId, trackChanges);
             var wallet = await GetWalletAndCheckIfItExists(walletId, trackChanges);
-            var _ = await GetUserWalletAndCheckIfItExists(userId, walletId, trackChanges);
+            _ = await GetUserWalletAndCheckIfItExists(userId, walletId, trackChanges);
             await CheckIfUserExists(friendId, trackChanges);
             await CheckIfTwoUsersAreFriends(userId, friendId, trackChanges);
             var userWallet = await _repository.UserWallet.GetUserWalletAsync(friendId, walletId, trackChanges);

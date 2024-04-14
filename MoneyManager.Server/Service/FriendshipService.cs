@@ -43,11 +43,11 @@ namespace MoneyManager.Server.Service
             return friendDtos;
         }
 
-        public async Task<IEnumerable<UserDto>> GetAllFriendRequestsForUserAsync(Guid uerId, bool trackChanges)
+        public async Task<IEnumerable<UserDto>> GetAllFriendRequestsForUserAsync(Guid userId, bool trackChanges)
         {
-            await CheckIfUserExists(uerId, trackChanges);
-            var friendships = await _repository.Friendship.GetFriendshipsFromFriends(uerId, isAccepted: false, trackChanges);
-            var friendIds = friendships.Select(f => f.FriendId);
+            await CheckIfUserExists(userId, trackChanges);
+            var friendships = await _repository.Friendship.GetFriendshipsFromFriends(userId, isAccepted: false, trackChanges);
+            var friendIds = friendships.Select(f => f.UserId);
             var friends = await _repository.User.GetManyUsersAsync(friendIds, trackChanges);
             var friendDtos = _mapper.Map<IEnumerable<UserDto>>(friends);
             return friendDtos;

@@ -39,7 +39,7 @@ const categoryReports = [
 
 function ReportDetail({ openCloseDetail, inflow }) {
     const [openCategoryChartDialog, setOpenCategoryChartDialog] = useState(false)
-    const openCloseCategoryChartDialog = useCallback((open) => setOpenCategoryChartDialog(open))
+    const openCloseCategoryChartDialog = useCallback((open) => setOpenCategoryChartDialog(open), [])
 
     return (
         <Stack sx={{ m: 0, p: 0, w: "100%", h: "100%" }}>
@@ -48,11 +48,11 @@ function ReportDetail({ openCloseDetail, inflow }) {
                     <button className={cx('close-btn')} onClick={() => openCloseDetail(false)}>
                         <CloseIcon sx={{ width: "25px", height: "25px" }} />
                     </button>
-                    <Typography variant="div" sx={{ fontWeight: 600, fontSize: "2.0rem" }}>
+                    <Typography variant="div" sx={{ fontWeight: 600, fontSize: "20px" }}>
                         {inflow ? "Inflow" : "Outflow"}
                     </Typography>
                 </div>
-                <Typography sx={{ color: inflow ? '#039be5' : '#e51c23', fontSize: "1.6rem", fontWeight: 600, mr: "20px" }}>-6,800,000,000 <u>{CURRENCY_UNIT}</u></Typography>
+                <Typography sx={{ color: inflow ? '#039be5' : '#e51c23', fontWeight: 600, mr: "20px" }}>-6,800,000,000 <u>{CURRENCY_UNIT}</u></Typography>
             </Stack>
             <Divider sx={{ mb: "20px" }} />
             <Stack>
@@ -100,12 +100,12 @@ function ReportDetail({ openCloseDetail, inflow }) {
                             </ListItemAvatar>
                             <ListItemText
                                 primary={
-                                    <Typography sx={{ fontSize: "1.4rem", fontWeight: 600 }}>{category.name}</Typography>
+                                    <Typography sx={{ fontSize: "14px", fontWeight: 600 }}>{category.name}</Typography>
                                 }
                             >
                             </ListItemText>
                             <Typography sx={{
-                                fontSize: "1.4rem", m: "20px",
+                                fontSize: "14px", m: "20px",
                                 color: category.type === 1 ? "#039be5" : "#e51c23"
                             }}>
                                 {category.amount} <u>{CURRENCY_UNIT}</u>

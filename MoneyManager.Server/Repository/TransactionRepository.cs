@@ -10,11 +10,20 @@ namespace MoneyManager.Server.Repository
         {
         }
 
-        public async Task<IEnumerable<Transaction>> GetAllTransactionsInMonthForWalletAsync
-            (Guid walletId, DateTime time, bool trackChanges)
-            => await FindByCondition(tr => tr.WalletId == walletId 
+        public async Task<IEnumerable<Transaction>> GetTransactionsInMonthAsync
+            (Guid userId, Guid walletId, DateTime time, bool trackChanges)
+            => await FindByCondition(tr => tr.WalletId == walletId && tr.CreatorId == userId
                             && tr.Date.Month == time.Month && tr.Date.Year == time.Year, trackChanges)
                     .ToListAsync();
+
+        public async Task<IEnumerable<Transaction>> GetAllTransactionsInMonthAsync
+            (Guid userId, DateTime time, bool trackChanges)
+            => await FindByCondition(tr => tr.CreatorId == userId 
+                        && tr.Date.Month == time.Month && tr.Date.Year == time.Year, trackChanges)
+                    .ToListAsync();
+
+        public async Task<Transaction?> GetTransactionAsync(Guid id, bool trackChanges)
+            => await FindByCondition(tr => tr.Id == id, trackChanges).SingleOrDefaultAsync();
 
         public void CreateTransaction(Transaction transaction) => Create(transaction);
 

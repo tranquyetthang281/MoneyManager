@@ -14,12 +14,12 @@
 
 .name {
     font-weight: 600;
-    font-size: 1.6rem;
+    font-size: 16px;
     color: rgba(0, 0, 0, .7);
 }
 
 .range-date {
-    font-size: 1.4rem;
+    font-size: 14px;
     letter-spacing: 0.5px;
 }
 
@@ -32,7 +32,7 @@
     left: 0;
     box-shadow: 2px 2px 4px 4px rgba(0, 0, 0, .1);
     display: flex;
-    font-size: 1.4rem;
+    font-size: 14px;
     color: rgba(0, 0, 0, .5);
     z-index: 200;
 }
@@ -49,7 +49,7 @@
 
 .select-text {
     font-weight: 800;
-    font-size: 1.8rem;
+    font-size: 18px;
     color: var(--primary);
 }
 

@@ -1,0 +1,158 @@
+.content {
+    width: 1008px;
+    height: 400px;
+}
+
+.btn {
+    width: 100px;
+    height: 40px;
+    margin: 4px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 600;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.save-btn {
+    background-color: var(--primary);
+    color: white;
+    margin-right: 20px;
+
+    &:hover {
+        background-color: rgb(45, 184, 76, 0.6);
+    }
+}
+
+.cancel-btn {
+    color: var(--primary);
+    margin-right: 20px;
+
+    &:hover {
+        background-color: rgba(#ccc, 0.6);
+    }
+}
+
+.select-name {
+    width: 460px;
+    height: 80px;
+    border: 1.5px solid rgb(154, 154, 154, 0.5);
+    border-radius: 10px;
+    padding: 10px;
+    background-color: transparent;
+    margin: 10px;
+
+    &:hover {
+        border-color: var(--primary);
+    }
+
+    &:focus-within {
+        border-color: var(--primary);
+    }
+}
+
+.input-name {
+    caret-color: var(--primary);
+    font-size: 16px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.select-title {
+    font-size: 14px;
+    color: rgb(154, 154, 154);
+    margin-bottom: auto;
+}
+
+.select-friend {
+    width: 460px;
+    height: 80px;
+    border: 1.5px solid rgb(154, 154, 154, 0.5);
+    border-radius: 10px;
+    padding: 10px;
+    background-color: transparent;
+    margin: 10px;
+
+    &:hover {
+        cursor: pointer;
+        border-color: var(--primary);
+    }
+}
+
+.owner {
+    width: 460px;
+    height: 80px;
+    border: 1.5px solid rgb(154, 154, 154, 0.5);
+    border-radius: 10px;
+    padding: 10px;
+    background-color: transparent;
+    margin: 10px;
+}
+
+.owner-name {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.owner-email {
+    font-size: 14px;
+}
+
+.add-friend-btn {
+    color: #fff;
+    background-color: var(--primary);
+    width: 42px;
+    height: 42px;
+    z-index: 195;
+
+    &:hover {
+        background-color: green
+    }
+}
+
+.select-avatar {
+    width: 32px;
+    height: 32px;
+}
+
+.owner-avatar {
+    width: 40px;
+    height: 40px;
+}
+
+.select-amount {
+    width: 460px;
+    height: 80px;
+    border: 1.5px solid rgb(154, 154, 154, 0.5);
+    border-radius: 10px;
+    padding: 10px;
+    background-color: transparent;
+    margin: 10px;
+
+    &:hover {
+        border-color: var(--primary);
+    }
+
+    &:focus-within {
+        border-color: var(--primary);
+    }
+}
+
+.un-active-select {
+    width: 460px;
+    height: 80px;
+    border: 1.5px solid rgb(154, 154, 154, 0.2);
+    border-radius: 10px;
+    padding: 10px;
+    background-color: transparent;
+    margin: 10px;
+    color: rgb(154, 154, 154, 0.5);
+}
+
+.input-amount {
+    margin-bottom: 5px;
+    caret-color: var(--primary);
+    background-color: transparent;
+}

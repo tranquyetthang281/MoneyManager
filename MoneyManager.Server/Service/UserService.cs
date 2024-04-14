@@ -5,6 +5,7 @@ using MoneyManager.Server.Entities.Models;
 using MoneyManager.Server.Entities.Exceptions;
 using AutoMapper;
 using MoneyManager.Server.Shared.DataTransferObjects.User;
+using Microsoft.AspNetCore.Identity;
 
 namespace MoneyManager.Server.Service
 {
@@ -13,12 +14,15 @@ namespace MoneyManager.Server.Service
         private readonly IRepositoryManager _repository;
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
+        private readonly UserManager<User> _userManager;
 
-        public UserService(IRepositoryManager repository, ILoggerManager logger, IMapper mapper)
+        public UserService(IRepositoryManager repository, ILoggerManager logger, 
+            IMapper mapper, UserManager<User> userManager)
         {
             _repository = repository;
             _logger = logger;
             _mapper = mapper;
+            _userManager = userManager;
         }
 
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync(bool trackChanges)
@@ -44,13 +48,13 @@ namespace MoneyManager.Server.Service
                 throw new UserNotFoundException(userId);
         }
 
-        public async Task<UserDto> CreateUserAsync(UserForCreationDto userDto)
+        public async Task<IdentityResult> CreateUserAsync(UserForCreationDto userDto)
         {
             var user = _mapper.Map<User>(userDto);
-            _repository.User.CrateUser(user);
-            await _repository.SaveAsync();
-            var userToReturn = _mapper.Map<UserDto>(user);
-            return userToReturn;
+            var result = await _userManager.CreateAsync(user, userDto.Password);
+            if (result.Succeeded)
+                await _userManager.AddToRolesAsync(user, userDto.Roles);
+            return result;
         }
 
         public async Task DeleteUserAsync(Guid id, bool trackChanges)

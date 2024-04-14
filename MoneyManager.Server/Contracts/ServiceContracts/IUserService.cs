@@ -1,4 +1,5 @@
-﻿using MoneyManager.Server.Entities.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using MoneyManager.Server.Entities.Models;
 using MoneyManager.Server.Shared.DataTransferObjects.User;
 
 namespace MoneyManager.Server.Contracts.ServiceContracts
@@ -9,7 +10,7 @@ namespace MoneyManager.Server.Contracts.ServiceContracts
 
         Task<UserDto> GetUserAsync(Guid id, bool trackChanges);
 
-        Task<UserDto> CreateUserAsync(UserForCreationDto userDto);
+        Task<IdentityResult> CreateUserAsync(UserForCreationDto userDto);
 
         Task DeleteUserAsync(Guid id, bool trackChanges);
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using MoneyManager.Server.Contracts.ServiceContracts;
 using MoneyManager.Server.Presentation.ActionFilters;
@@ -15,49 +16,66 @@ namespace MoneyManager.Server.Presentation.Controllers
         public UserController(IServiceManager service) => _service = service;
 
         [HttpGet]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _service.UserService.GetAllUsersAsync(trackChanges: false);
             return Ok(users);
         }
 
-        [HttpGet("{id:guid}", Name = "UserById")]
-        public async Task<IActionResult> GetUser(Guid id)
+        [HttpGet("{userId:guid}", Name = "UserById")]
+        [Authorize]
+        [ServiceFilter(typeof(ValidationUserClaimFilterAttribute))]
+        public async Task<IActionResult> GetUser(Guid userId)
         {
-            var user = await _service.UserService.GetUserAsync(id, trackChanges: false);
+            var user = await _service.UserService.GetUserAsync(userId, trackChanges: false);
             return Ok(user);
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         [ServiceFilter(typeof(ValidationDtoFilterAttribute))]
         public async Task<IActionResult> CreateUser([FromBody] UserForCreationDto userDto)
         {
-            var createdUser = await _service.UserService.CreateUserAsync(userDto);
-            return CreatedAtRoute("UserById", new { id = createdUser.Id }, createdUser);
+            var result = await _service.UserService.CreateUserAsync(userDto);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.TryAddModelError(error.Code, error.Description);
+                }
+                return BadRequest(ModelState);
+            }
+            return StatusCode(StatusCodes.Status201Created);
         }
 
         [HttpDelete("{id:guid}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
             await _service.UserService.DeleteUserAsync(id, trackChanges: false);
             return NoContent();
         }
 
-        [HttpPut("{id:guid}")]
+        [HttpPut("{userId:guid}")]
+        [Authorize]
         [ServiceFilter(typeof(ValidationDtoFilterAttribute))]
-        public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UserForUpdateDto userDto)
+        [ServiceFilter(typeof(ValidationUserClaimFilterAttribute))]
+        public async Task<IActionResult> UpdateUser(Guid userId, [FromBody] UserForUpdateDto userDto)
         {
-            await _service.UserService.UpdateUserAsync(id, userDto, trackChanges: true);           
+            await _service.UserService.UpdateUserAsync(userId, userDto, trackChanges: true);           
             return NoContent();
         }
 
-        [HttpPatch("{id:guid}")]
-        public async Task<IActionResult> PartiallyUpdateUser(Guid id, [FromBody] JsonPatchDocument<UserForUpdateDto> patchDoc)
+        [HttpPut("{userId:guid}")]
+        [Authorize]
+        [ServiceFilter(typeof(ValidationUserClaimFilterAttribute))]
+        public async Task<IActionResult> PartiallyUpdateUser(Guid userId, [FromBody] JsonPatchDocument<UserForUpdateDto> patchDoc)
         {
             if (patchDoc is null)
                 return BadRequest("patchDoc object sent from client is null.");
 
-            var result = await _service.UserService.GetUserForPatchAsync(id, trackChanges: true);
+            var result = await _service.UserService.GetUserForPatchAsync(userId, trackChanges: true);
             
             patchDoc.ApplyTo(result.userToPatch, ModelState);
 

@@ -21,5 +21,7 @@ namespace MoneyManager.Server.Shared.DataTransferObjects.User
         public DateTime? BirthDate { get; init; }
 
         public string? Avatar { get; init; }
+
+        public ICollection<string>? Roles { get; init; }
     }
 }

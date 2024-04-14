@@ -1,9 +1,21 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { privateRoutes } from "./routes";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { privateRoutes, publicRoutes } from "./routes";
 import { DefaultLayout } from "./layouts";
-import { Fragment } from 'react';
+import { Fragment, useContext } from 'react';
+import { AuthContext } from "./components/AuthProvider";
+
+function PrivateRoute({ children }) {
+    const { auth } = useContext(AuthContext)
+
+    if (false) {
+        return <Navigate to="/login" />
+    }
+
+    return children
+}
 
 function App() {
+
     return (
         <Router>
             <div className="App">
@@ -24,13 +36,26 @@ function App() {
                                     key={index}
                                     path={route.path}
                                     element={
-                                        <Layout currentKey={index}>
-                                            <Page />
-                                        </Layout>
+                                        <PrivateRoute>
+                                            <Layout>
+                                                <Page />
+                                            </Layout>
+                                        </PrivateRoute>
                                     }
                                 />
                             );
-                        })}
+                        })
+                    }
+                    {
+                        publicRoutes.map((route, index) => {
+                            const Page = route.component
+                            return <Route
+                                key={index}
+                                path={route.path}
+                                element={<Page />}
+                            />
+                        })
+                    }
                 </Routes>
             </div>
         </Router>

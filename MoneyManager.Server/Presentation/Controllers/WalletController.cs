@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MoneyManager.Server.Contracts.ServiceContracts;
 using MoneyManager.Server.Presentation.ActionFilters;
 using MoneyManager.Server.Shared.DataTransferObjects.Friend;
@@ -8,19 +9,22 @@ namespace MoneyManager.Server.Presentation.Controllers
 {
     [Route("api/users/{userId:guid}/wallets")]
     [ApiController]
+    [Authorize]
     public class WalletController : ControllerBase
     {
         private readonly IServiceManager _service;
         public WalletController(IServiceManager service) => _service = service;
 
         [HttpGet]
+        [ServiceFilter(typeof(ValidationUserClaimFilterAttribute))]
         public async Task<IActionResult> GetAllWalletsForUser(Guid userId)
         {
-            var wallets = await _service.WalletService.GetAllWalletsForUserAsync(userId, trackChanges: false);
+            var wallets = await _service.WalletService.GetAllWalletsWithTotalForUserAsync(userId, trackChanges: false);
             return Ok(wallets);
         }
 
         [HttpGet("{walletId:guid}", Name = "GetWalletForUser")]
+        [ServiceFilter(typeof(ValidationUserClaimFilterAttribute))]
         public async Task<IActionResult> GetWalletForUser(Guid userId, Guid walletId)
         {
             var wallet = await _service.WalletService.GetWalletForUserAsync(userId, walletId, trackChanges: false);
@@ -29,6 +33,7 @@ namespace MoneyManager.Server.Presentation.Controllers
 
         [HttpPost]
         [ServiceFilter(typeof(ValidationDtoFilterAttribute))]
+        [ServiceFilter(typeof(ValidationUserClaimFilterAttribute))] 
         public async Task<IActionResult> CreateWalletForUser(Guid userId, [FromBody] WalletForCreationDto walletDto)
         {
             var wallet = await _service.WalletService.CreateWalletForUserAsync(userId, walletDto, trackChanges: false);
@@ -37,6 +42,7 @@ namespace MoneyManager.Server.Presentation.Controllers
 
         [HttpPut("{walletId:guid}")]
         [ServiceFilter(typeof(ValidationDtoFilterAttribute))]
+        [ServiceFilter(typeof(ValidationUserClaimFilterAttribute))]
         public async Task<IActionResult> UpdateWalletNameForUser(Guid userId, Guid walletId, [FromBody] WalletForUpdateNameDto walletDto)
         {
             await _service.WalletService.UpdateWalletNameForUserAsync
@@ -46,6 +52,7 @@ namespace MoneyManager.Server.Presentation.Controllers
 
         [HttpPost("{walletId:guid}")]
         [ServiceFilter(typeof(ValidationDtoFilterAttribute))]
+        [ServiceFilter(typeof(ValidationUserClaimFilterAttribute))]
         public async Task<IActionResult> AddFriendToWallet(Guid userId, Guid walletId, [FromBody] FriendForAddToWalletDto friendDto)
         {
             await _service.WalletService.AddFriendToWalletAsync(userId, walletId, friendDto.FriendId, trackChanges: false);

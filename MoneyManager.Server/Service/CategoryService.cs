@@ -4,6 +4,8 @@ using MoneyManager.Server.Contracts.ServiceContracts;
 using AutoMapper;
 using MoneyManager.Server.Shared.DataTransferObjects.Category;
 using System.Collections;
+using MoneyManager.Server.Entities.Models;
+using MoneyManager.Server.Entities.Exceptions;
 
 namespace MoneyManager.Server.Service
 {
@@ -27,9 +29,31 @@ namespace MoneyManager.Server.Service
             return categoriesDto;
         }
 
-        public async Task<IEnumerable<CategoryDto>> GetInflowCategories(bool trackChanges)
+        public async Task<CategoryDto> GetCategoryAsync(Guid id, bool trackChanges)
         {
+            var category = await _repository.Category.GetCategoryAsync(id, trackChanges);
+            if (category is null)
+                throw new CategoryNotFoundException(id);
+            var categoyDto = _mapper.Map<CategoryDto>(category);
+            return categoyDto;
+        }
 
+        public async Task<CategoryDto> CreateCategoryAsync(CategoryForCreationDto creationDto)
+        {
+            var category = _mapper.Map<Category>(creationDto);
+            _repository.Category.CreateCategory(category);
+            await _repository.SaveAsync();
+            var categoryToReturn = _mapper.Map<CategoryDto>(category);
+            return categoryToReturn;
+        }
+
+        public async Task DeleteCategoryAsync(Guid id, bool trackChanges)
+        {
+            var category = await _repository.Category.GetCategoryAsync(id, trackChanges);
+            if (category is null)
+                throw new CategoryNotFoundException(id);
+            _repository.Category.DeleteCategory(category);
+            await _repository.SaveAsync();  
         }
     }
 }

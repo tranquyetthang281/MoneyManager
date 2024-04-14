@@ -2,10 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Repository.Configuration;
 using MoneyManager.Server.Repository.Configuration;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace MoneyManager.Server.Repository
 {
-    public class RepositoryContext : DbContext
+    public class RepositoryContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
         public RepositoryContext(DbContextOptions options) : base(options)
         {
@@ -14,6 +16,8 @@ namespace MoneyManager.Server.Repository
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Friendship>().HasKey(f => new { f.UserId, f.FriendId });
             modelBuilder.Entity<Friendship>()
                 .HasOne(f => f.User)
@@ -39,16 +43,15 @@ namespace MoneyManager.Server.Repository
                 .HasForeignKey(t => t.WalletId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
-            modelBuilder.ApplyConfiguration(new FriendshipConfiguration());
-            modelBuilder.ApplyConfiguration(new WalletConfiguration());
-            modelBuilder.ApplyConfiguration(new UserWalletConfiguration());
-            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
-            modelBuilder.ApplyConfiguration(new TransactionConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            //modelBuilder.ApplyConfiguration(new UserConfiguration());
+            //modelBuilder.ApplyConfiguration(new FriendshipConfiguration());
+            //modelBuilder.ApplyConfiguration(new WalletConfiguration());
+            //modelBuilder.ApplyConfiguration(new UserWalletConfiguration());
+            //modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            //modelBuilder.ApplyConfiguration(new TransactionConfiguration());
         }
 
-        public DbSet<User>? Users { get; set; }
-        
         public DbSet<UserWallet>? UserWallets { get; set; }
 
         public DbSet<Wallet>? Wallets { get; set; }
@@ -58,6 +61,5 @@ namespace MoneyManager.Server.Repository
         public DbSet<Transaction>? Transactions { get; set; }
         
         public DbSet<Friendship>? Friendships { get; set; }
-
     }
 }
