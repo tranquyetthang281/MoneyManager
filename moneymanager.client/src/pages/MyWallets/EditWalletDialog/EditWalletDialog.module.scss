@@ -108,7 +108,7 @@
     z-index: 195;
 
     &:hover {
-        background-color: green
+        background-color: green;
     }
 }
 
@@ -155,4 +155,19 @@
     margin-bottom: 5px;
     caret-color: var(--primary);
     background-color: transparent;
+}
+
+.avatar {
+    width: 100px;
+    height: 80px;
+    border: 1.5px solid rgb(154, 154, 154, 0.5);
+    border-radius: 10px;
+    padding: 10px;
+    background-color: transparent;
+    margin: 10px;
+
+    &:hover {
+        cursor: pointer;
+        border-color: var(--primary);
+    }
 }

@@ -16,6 +16,8 @@ namespace MoneyManager.Server.Entities.Models
         [Column(TypeName = "decimal(18, 2)")]
         public decimal InitBalance { get; set; }
 
+        public string? Avatar { get; set; }
+
         public virtual ICollection<UserWallet>? UserWallets { get; set; }
 
         public virtual ICollection<Transaction>? Transactions { get; set; }

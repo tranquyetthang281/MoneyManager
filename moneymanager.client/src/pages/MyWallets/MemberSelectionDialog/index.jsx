@@ -1,28 +1,30 @@
 import { Avatar, Dialog, DialogContent, DialogTitle, IconButton, Stack, Typography, List, ListItem, ListItemAvatar, Divider, ListItemText, Button, DialogActions, DialogContentText } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
-import DoneIcon from '@mui/icons-material/Done';
 import classNames from "classnames/bind";
-import { Fragment, memo, useEffect, useState } from "react";
+import { Fragment, memo, useContext, useEffect, useState } from "react";
 import styles from "./MemberSelectionDialog.module.scss"
+import { AuthContext } from "@/components/AuthProvider";
+import useErrorSnackbar from "@/hooks/useErrorSnackbar";
 
 const cx = classNames.bind(styles)
 
-function MemberSelectionDialog({ listMembers, listFriends, add, walletName, open, openCloseDialog }) {
+function MemberSelectionDialog({ listMembers, listFriends, add, walletName, open, setOpen }) {
 
+    const { auth } = useContext(AuthContext)
     const [addMember, setAddMember] = useState(false)
     const [openConfirmAdding, setOpenConfirmAdding] = useState(false)
     const [selectedFriend, setSelectedFriend] = useState()
+    const showErrorSnackbar = useErrorSnackbar()
 
     const handleClose = (_, reason) => {
         if (reason && reason === "backdropClick")
             return;
-        openCloseDialog(false);
+        setOpen(false);
     }
 
     const closeConfirmAdding = () => setOpenConfirmAdding(false)
 
     useEffect(() => {
-        console.log(add)
         setAddMember(add)
     }, [open])
 
@@ -37,7 +39,7 @@ function MemberSelectionDialog({ listMembers, listFriends, add, walletName, open
 
             <IconButton
                 aria-label="close"
-                onClick={() => openCloseDialog(false)}
+                onClick={() => setOpen(false)}
                 sx={{ position: 'absolute', right: 12, top: 12, }}>
                 <CloseIcon sx={{ width: 24, height: 24, color: "black" }} />
             </IconButton>
@@ -52,7 +54,10 @@ function MemberSelectionDialog({ listMembers, listFriends, add, walletName, open
                         <button className={cx('select-btn', addMember ? null : 'selected-btn')}
                             onClick={() => setAddMember(false)}>Wallet members</button>
                         <button className={cx('select-btn', addMember ? 'selected-btn' : null)}
-                            onClick={() => setAddMember(true)}>Add friend to wallet</button>
+                            onClick={() => {
+                                showErrorSnackbar('The feature is in development.')
+                                // setAddMember(true)
+                            }}>Add friend to wallet</button>
                     </Stack>
 
                     <Stack>
@@ -68,7 +73,7 @@ function MemberSelectionDialog({ listMembers, listFriends, add, walletName, open
                                             <ListItemText
                                                 primary={
                                                     <Typography className={cx('friend-name')}>
-                                                        {friend.name}
+                                                        {friend.id === auth.userId ? 'You' : friend.name}
                                                     </Typography>
                                                 }
                                                 secondary={

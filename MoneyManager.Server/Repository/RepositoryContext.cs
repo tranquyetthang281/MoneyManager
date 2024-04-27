@@ -48,7 +48,7 @@ namespace MoneyManager.Server.Repository
             //modelBuilder.ApplyConfiguration(new FriendshipConfiguration());
             //modelBuilder.ApplyConfiguration(new WalletConfiguration());
             //modelBuilder.ApplyConfiguration(new UserWalletConfiguration());
-            //modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             //modelBuilder.ApplyConfiguration(new TransactionConfiguration());
         }
 

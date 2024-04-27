@@ -52,15 +52,15 @@ namespace MoneyManager.Server.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("38e7dd9b-f87a-43ba-a3ee-4c4f54cee17f"),
-                            ConcurrencyStamp = "d4be59a2-75ac-45fd-98e2-bc13cca4362e",
+                            Id = new Guid("345c9ba5-4135-428c-8592-f343e8456e00"),
+                            ConcurrencyStamp = "2c6a3cb5-3a4b-4707-a43e-84e26dac9ca0",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         },
                         new
                         {
-                            Id = new Guid("6c23352f-3c99-4891-bfbd-8a197f150d56"),
-                            ConcurrencyStamp = "65220633-793c-45af-9d89-7041259fb8d7",
+                            Id = new Guid("51c67b79-efd4-44d1-9dc1-86932e4b1b18"),
+                            ConcurrencyStamp = "1cde02b8-4366-4789-86b3-639742b637f8",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -175,6 +175,9 @@ namespace MoneyManager.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Avatar")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -185,6 +188,113 @@ namespace MoneyManager.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("0cbd4c1a-e11b-4d44-96d2-b47b7ceca7f4"),
+                            Avatar = "/food-and-beverage.png",
+                            Name = "Food & Beverage",
+                            Type = -1
+                        },
+                        new
+                        {
+                            Id = new Guid("2a821a31-af92-432f-be3a-d51becfb8d60"),
+                            Avatar = "/transportation.png",
+                            Name = "Transportation",
+                            Type = -1
+                        },
+                        new
+                        {
+                            Id = new Guid("468882be-3467-4537-bca7-0b59368a1e1f"),
+                            Avatar = "/rentals.png",
+                            Name = "Rentals",
+                            Type = -1
+                        },
+                        new
+                        {
+                            Id = new Guid("47b7bea2-b474-4d6a-82d1-08b52190eaab"),
+                            Avatar = "/bill.png",
+                            Name = "Bill",
+                            Type = -1
+                        },
+                        new
+                        {
+                            Id = new Guid("49c7d810-e5f4-4b27-b89c-51b06d3cff12"),
+                            Avatar = "/education.png",
+                            Name = "Education",
+                            Type = -1
+                        },
+                        new
+                        {
+                            Id = new Guid("5ce2742d-14ac-4227-8548-9f6ed8f0a989"),
+                            Avatar = "/shopping.png",
+                            Name = "Shopping",
+                            Type = -1
+                        },
+                        new
+                        {
+                            Id = new Guid("79fb5982-a325-4ed7-9087-f82240438b59"),
+                            Avatar = "/sport.png",
+                            Name = "Sport",
+                            Type = -1
+                        },
+                        new
+                        {
+                            Id = new Guid("841cb344-b768-45e9-85d7-ca588a956d11"),
+                            Avatar = "/clothes.png",
+                            Name = "Clothes",
+                            Type = -1
+                        },
+                        new
+                        {
+                            Id = new Guid("8608f8c2-6587-49d3-9fc0-e7fca31d4eef"),
+                            Avatar = "/coffee.png",
+                            Name = "Coffee",
+                            Type = -1
+                        },
+                        new
+                        {
+                            Id = new Guid("8979b4b9-551a-47f5-b6be-eae4236c089c"),
+                            Avatar = "/pay-interest.png",
+                            Name = "Pay Interest",
+                            Type = -1
+                        },
+                        new
+                        {
+                            Id = new Guid("95cee5df-b529-4a4e-8a87-db06a5244458"),
+                            Avatar = "/give-gifts.png",
+                            Name = "Give Gifts",
+                            Type = -1
+                        },
+                        new
+                        {
+                            Id = new Guid("a1d5fbaa-58d4-436a-8f89-0df1c2e1912b"),
+                            Avatar = "/outgoing-transfer.png",
+                            Name = "Outgoing Transfer",
+                            Type = -1
+                        },
+                        new
+                        {
+                            Id = new Guid("a9dd513c-b656-44ab-9f37-accf194ccd9e"),
+                            Avatar = "/salary.png",
+                            Name = "Salary",
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("af853a77-43a1-4264-af16-bddcaedce257"),
+                            Avatar = "/receive-gifts.png",
+                            Name = "Receive Gifts",
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("d0841186-ed4b-4121-a135-a33df149b576"),
+                            Avatar = "/incoming-transfer.png",
+                            Name = "Incoming Transfer",
+                            Type = 1
+                        });
                 });
 
             modelBuilder.Entity("MoneyManager.Server.Entities.Models.Friendship", b =>
@@ -357,6 +467,9 @@ namespace MoneyManager.Server.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Avatar")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Balance")
                         .HasColumnType("decimal(18,2)");

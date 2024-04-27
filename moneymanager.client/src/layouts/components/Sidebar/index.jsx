@@ -55,7 +55,7 @@ function Sidebar() {
                 </button>
             </Link>
 
-            <Link to="/budgets">
+            {/* <Link to="/budgets">
                 <button className={cx('btn', isCurrentPage(1, currentPageKey) ? 'current' : null)}
                     onClick={() => setCurrentPageKey(1)}>
                     <Stack alignItems="center">
@@ -63,7 +63,7 @@ function Sidebar() {
                         <span className={cx('btn-title')}>Budgets</span>
                     </Stack>
                 </button>
-            </Link>
+            </Link> */}
 
             <Link to="/spending-report">
                 <button className={cx('btn', isCurrentPage(2, currentPageKey) ? 'current' : null)}

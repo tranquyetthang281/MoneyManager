@@ -11,6 +11,8 @@ namespace MoneyManager.Server.Shared.DataTransferObjects.Wallet
         public decimal Balance { get; init; }
 
         public decimal InitBalance { get; init; }
+
+        public string? Avatar { get; init; }
         
         public bool IsOwner { get; init; }
 

@@ -37,6 +37,7 @@ namespace MoneyManager.Server.Presentation.Controllers
         }
 
         [HttpDelete("{categoryId:guid}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteCategory(Guid categoryId)
         {
             await _service.CategoryService.DeleteCategoryAsync(categoryId, trackChanges: false);

@@ -67,7 +67,7 @@ namespace MoneyManager.Server.Presentation.Controllers
             return NoContent();
         }
 
-        [HttpPut("{userId:guid}")]
+        [HttpPatch("{userId:guid}")]
         [Authorize]
         [ServiceFilter(typeof(ValidationUserClaimFilterAttribute))]
         public async Task<IActionResult> PartiallyUpdateUser(Guid userId, [FromBody] JsonPatchDocument<UserForUpdateDto> patchDoc)

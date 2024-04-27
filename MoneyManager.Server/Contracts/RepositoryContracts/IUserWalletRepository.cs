@@ -6,7 +6,9 @@ namespace MoneyManager.Server.Contracts.RepositoryContracts
     {
         Task<UserWallet?> GetUserWalletAsync(Guid userId, Guid walletId, bool trackChanges);
 
-        Task<IList<UserWallet>> GetManyUserWalletsAsync(Guid userId, bool trackChanges);
+        Task<IList<UserWallet>> GetManyUserWalletsByUserAsync(Guid userId, bool trackChanges);
+
+        Task<IList<UserWallet>> GetManyUserWalletsByWalletAsync(Guid walletId, bool trackChanges);
 
         void CreateUserWallet(UserWallet userWallet);
 

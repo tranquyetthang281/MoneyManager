@@ -3,6 +3,8 @@ using MoneyManager.Server.Contracts.ServiceContracts;
 using MoneyManager.Server.Presentation.ActionFilters;
 using MoneyManager.Server.Shared.DataTransferObjects.User;
 using MoneyManager.Server.Entities.Email;
+using MoneyManager.Server.Entities.Models;
+using MoneyManager.Server.Shared.DataTransferObjects.Wallet;
 
 namespace MoneyManager.Server.Presentation.Controllers
 {
@@ -22,7 +24,12 @@ namespace MoneyManager.Server.Presentation.Controllers
         public async Task<IActionResult> ConfirmEmail(string token, string email)
         {
             var result = await _service.AuthenticationService.ConfirmEmailAsync(token, email);
-            return result ? Ok() : BadRequest("Confirm email failed");
+            return result ? new ContentResult
+            {
+                ContentType = "text/html",
+                Content = "<h3>Email confirmation successfully.</h3>"
+            } 
+            : BadRequest("Confirm email failed");
         }
 
         [HttpPost("register")]

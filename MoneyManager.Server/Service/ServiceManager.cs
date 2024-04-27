@@ -24,7 +24,8 @@ namespace MoneyManager.Server.Service
             _walletService = new Lazy<IWalletService>(() => new WalletService(repositoryManager, logger, mapper));
             _transactionService = new Lazy<ITransactionService>(() => new TransactionService(repositoryManager, logger, mapper));
             _categoryService = new Lazy<ICategoryService>(() => new CategoryService(repositoryManager, logger, mapper));
-            _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(logger, mapper, configuration, userManager));
+            _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(logger, mapper, configuration, 
+                repositoryManager, userManager));
         }
 
         public IUserService UserService => _userService.Value;

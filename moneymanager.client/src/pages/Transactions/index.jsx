@@ -13,80 +13,73 @@ import { walletService, categoryService, transactionService } from "@/apiService
 import LoadingProgress from "@/components/LoadingProgress";
 import currencyFormatter from "@/utils/currencyFormatter";
 import { AuthContext } from "@/components/AuthProvider";
-import { useSnackbar } from 'notistack';
+import TransactionsPageProvider, { TransactionsPageContext } from "./TransactionsPageProvider";
+import useErrorSnackbar from "@/hooks/useErrorSnackbar";
 
 const cx = classNames.bind(styles)
 
-const userId = 'c9d4c053-49b6-410c-bc78-2d54a9991870'
-
-const sumOfTransactions = (transactions) =>
-    transactions.reduce((n, { amount }) => n + amount, 0)
-
 function Transactions() {
 
-    const {auth, setAuth} = useContext(AuthContext)
-    const { walletId } = useParams()
-    const [isShowingDetail, setIsShowingDetail] = useState(false)
-    const [openEditDialog, setOpenEditDialog] = useState(false)
-    const [addNewTransaction, setAddNewTransaction] = useState(true)
-    const [centerMonth, setCenterMonth] = useState(new Date())
+    return (
+        <TransactionsPageProvider>
+            <TransactionsPage />
+        </TransactionsPageProvider>
+    )
+}
+
+function TransactionsPage() {
+
     const [rangeMonths, setRangeMonths] = useState([])
-    const [listWallets, setListWallets] = useState([])
-    const [loadingListWallet, setLoadingListWallet] = useState(true)
-    const [loadingTransactions, setLoadingTransactions] = useState(true)
-    const [listTransactions, setListTransactions] = useState([])
     const [inflowAmount, setInflowAmount] = useState(0)
     const [outflowAmount, setOutflowAmount] = useState(0)
-    const [dicCategories, setDicCategories] = useState()
-    const [selectedTransaction, setSelectedTransaction] = useState()
-    const [selectedWallet, setSelectedWallet] = useState()
-    const { enqueueSnackbar } = useSnackbar();
+    const [loadingListWallet, setLoadingListWallet] = useState(true)
+    const [loadingTransactions, setLoadingTransactions] = useState(true)
+    const { walletId } = useParams()
     const negative = useNavigate()
-    const openCloseDetail = useCallback((open) => setIsShowingDetail(open), [])
-    const selectTransaction = useCallback((transaction) => setSelectedTransaction(transaction), [])
-    const selectWallet = useCallback((wallet) => setSelectedWallet(wallet), [])
-   
-    const openCloseEditDialog = useCallback((open, add) => {
-        setOpenEditDialog(open)
-        setAddNewTransaction(add)
-    }, [])
+    const { auth } = useContext(AuthContext)
+    const {
+        centerMonth, 
+        setCenterMonth,
+        selectedWallet,
+        setListWallets,
+        setSelectedWallet,
+        listTransactions,
+        setListTransactions,
+        dicCategories,
+        setDicCategories,
+        openDetail,
+        setOpenDetail,
+        setOpenEditDialog,
+        setAddNewTransaction,
+    } = useContext(TransactionsPageContext)
+    const showErrorSnackbar = useErrorSnackbar()
 
-    const getTransactions = useCallback(() => {
+    const sumOfTransactions = (transactions) =>
+        transactions.reduce((n, { amount }) => n + amount, 0)
+
+    const getTransactions = () => {
         setLoadingTransactions(true)
         if (selectedWallet) {
             if (walletId) {
-                transactionService.getTransactionsInMonthForWallet(userId, walletId, centerMonth)
+                transactionService.getTransactionsInMonthForWallet(auth.userId, walletId, centerMonth, auth.accessToken)
                     .then(result => {
                         setListTransactions(result)
                         setLoadingTransactions(false)
                     })
+                    .catch(e => showErrorSnackbar(e.message))
             } else {
-                transactionService.getAllTransactionsInMonth(userId, centerMonth)
+                transactionService.getAllTransactionsInMonth(auth.userId, centerMonth, auth.accessToken)
                     .then(result => {
                         setListTransactions(result)
                         setLoadingTransactions(false)
                     })
+                    .catch(e => showErrorSnackbar(e.message))
             }
         }
-    }, [centerMonth, selectedWallet])
+    }
 
-    const handleClick = () => {
-        enqueueSnackbar('I love snacks.');
-    };
-
-    const handleClickVariant = (variant) => () => {
-        // variant could be success, error, warning, info, or default
-        enqueueSnackbar('This is a success message!', { variant });
-    };
-
-    useEffect(() => {
-        setRangeMonths(getRangeMonths(centerMonth))
-        openCloseDetail(false)
-    }, [centerMonth])
-
-    useEffect(() => {
-        // get wallets
-        walletService.getAllWalletsForUser(userId)
+    const getWallets = () => {
+        walletService.getAllWalletsForUser(auth.userId, auth.accessToken)
             .then(result => {
                 setListWallets(result)
                 if (walletId) {
@@ -102,15 +95,29 @@ function Transactions() {
                 }
                 setLoadingListWallet(false)
             })
-    }, [])
+            .catch(e => showErrorSnackbar(e.message))
+    }
 
-    useEffect(() => {
-        // get transactions
+    const reloadTransactions = useCallback(() => {
+        getWallets()
         getTransactions()
     }, [centerMonth, selectedWallet])
 
     useEffect(() => {
-        openCloseDetail(false)
+        setRangeMonths(getRangeMonths(centerMonth))
+        setOpenDetail(false)
+    }, [centerMonth])
+
+    useEffect(() => {
+        getWallets()
+    }, [])
+
+    useEffect(() => {
+        getTransactions()
+    }, [centerMonth, selectedWallet])
+
+    useEffect(() => {
+        setOpenDetail(false)
     }, [selectedWallet])
 
     useEffect(() => {
@@ -133,70 +140,69 @@ function Transactions() {
                 }, {})
                 setDicCategories(categories)
             })
+            .catch(e => showErrorSnackbar(e.message))
     }, [])
-
-
 
     return (
         <Fragment>
-            {loadingListWallet ?
-                <Box sx={{ height: '100vh' }}>
-                    {/* <LoadingProgress /> */}
-                    <Button onClick={handleClick}>Show snackbar</Button>
-                    <Button onClick={handleClickVariant('error')}>Show success snackbar</Button>
-                </Box>
-                :
-                <Fragment>
-                    <TransactionsHeader listWallets={listWallets} selectedWallet={selectedWallet} selectWallet={selectWallet} />
-                    {loadingTransactions &&
-                        <Box className={cx('transaction-loading')}>
-                            <LoadingProgress />
-                        </Box>}
-                    <Stack className={cx('wrapper')} justifyContent="center" direction="row">
-                        <Stack className={cx('transactions-list')}>
-                            <Stack className={cx('time-select')} direction="row">
-                                <button className={cx('time-select-btn')} onClick={() =>
-                                    setCenterMonth(prev => new Date(prev.getFullYear(), prev.getMonth() - 1))
-                                }>{rangeMonths[0]}</button>
-                                <button className={cx('time-select-btn', 'time-select-btn-center')}>{rangeMonths[1]}</button>
-                                <button className={cx('time-select-btn')} onClick={() =>
-                                    setCenterMonth(prev => new Date(prev.getFullYear(), prev.getMonth() + 1))
-                                }>{rangeMonths[2]}</button>
-                            </Stack>
-
-                            <Stack sx={{ overflowY: "scroll" }}>
-                                <Stack sx={{ height: 100, p: "20px", fontSize: "14px", mb: "25px" }}>
-                                    <Stack justifyContent="space-between" direction="row">
-                                        <span>Inflow</span>
-                                        <span className={cx('money-in')}>{currencyFormatter(inflowAmount)}</span>
-                                    </Stack>
-                                    <Stack justifyContent="space-between" direction="row" sx={{ mt: "10px" }}>
-                                        <span>Outflow</span>
-                                        <span className={cx('money-out')}>{currencyFormatter(outflowAmount)}</span>
-                                    </Stack>
-                                    <Divider primary="Inset below" sx={{ width: 120, alignSelf: "end", height: 10, borderBottomWidth: 2 }} />
-                                    <span style={{ alignSelf: "end", marginTop: 10 }}>{currencyFormatter(outflowAmount + inflowAmount)}</span>
+            {
+                loadingListWallet ?
+                    <LoadingProgress />
+                    :
+                    <Fragment>
+                        <TransactionsHeader />
+                        {
+                            loadingTransactions &&
+                            <Box className={cx('transaction-loading')}>
+                                <LoadingProgress />
+                            </Box>
+                        }
+                        <Stack className={cx('wrapper')} justifyContent="center" direction="row">
+                            <Stack className={cx('transactions-list')}>
+                                <Stack className={cx('time-select')} direction="row">
+                                    <button className={cx('time-select-btn')} onClick={() =>
+                                        setCenterMonth(prev => new Date(prev.getFullYear(), prev.getMonth() - 1))
+                                    }>{rangeMonths[0]}</button>
+                                    <button className={cx('time-select-btn', 'time-select-btn-center')}>{rangeMonths[1]}</button>
+                                    <button className={cx('time-select-btn')} onClick={() =>
+                                        setCenterMonth(prev => new Date(prev.getFullYear(), prev.getMonth() + 1))
+                                    }>{rangeMonths[2]}</button>
                                 </Stack>
-                                <ListTransactions categories={dicCategories} transactions={listTransactions} selectTransaction={selectTransaction} openCloseDetail={openCloseDetail} />
+
+                                <Stack sx={{ overflowY: "scroll" }}>
+                                    <Stack sx={{ height: 100, p: "20px", fontSize: "14px", mb: "25px" }}>
+                                        <Stack justifyContent="space-between" direction="row">
+                                            <span>Inflow</span>
+                                            <span className={cx('money-in')}>{currencyFormatter(inflowAmount)}</span>
+                                        </Stack>
+                                        <Stack justifyContent="space-between" direction="row" sx={{ mt: "10px" }}>
+                                            <span>Outflow</span>
+                                            <span className={cx('money-out')}>{currencyFormatter(outflowAmount)}</span>
+                                        </Stack>
+                                        <Divider primary="Inset below" sx={{ width: 120, alignSelf: "end", height: 10, borderBottomWidth: 2 }} />
+                                        <span style={{ alignSelf: "end", marginTop: 10 }}>{currencyFormatter(outflowAmount + inflowAmount)}</span>
+                                    </Stack>
+                                    <ListTransactions />
+                                </Stack>
                             </Stack>
+
+                            <Stack className={cx('transaction-detail', openDetail ? 'transaction-detail-show' : null)}>
+                                <TransactionDetail reloadTransactions={reloadTransactions} />
+                            </Stack>
+
+                            <Tooltip title={<h3>Add transaction</h3>} arrow>
+                                <Fab color="primary" aria-label="add" className={cx('add-transaction-btn')}
+                                    onClick={() => {
+                                        setOpenEditDialog(true)
+                                        setAddNewTransaction(true)
+                                    }}>
+                                    <AddIcon sx={{ fontSize: 26 }} />
+                                </Fab>
+                            </Tooltip>
+
+                            <TransactionEditDialog reloadTransactions={reloadTransactions} />
                         </Stack>
-
-                        <Stack className={cx('transaction-detail', isShowingDetail ? 'transaction-detail-show' : null)}>
-                            <TransactionDetail transaction={selectedTransaction} categories={dicCategories} wallets={listWallets} openCloseDetail={openCloseDetail} openCloseEditDialog={openCloseEditDialog} />
-                        </Stack>
-
-                        <Tooltip title={<h2>Add transaction</h2>} arrow>
-                            <Fab color="primary" aria-label="add" className={cx('add-transaction-btn')}
-                                onClick={() => {
-                                    openCloseEditDialog(true, true)
-                                }}>
-                                <AddIcon sx={{ fontSize: 26 }} />
-                            </Fab>
-                        </Tooltip>
-
-                        <TransactionEditDialog userId={userId} listWallets={listWallets} categories={dicCategories} transaction={selectedTransaction} wallet={selectedWallet} reloadTransactions={getTransactions} open={openEditDialog} openCloseEditDialog={openCloseEditDialog} add={addNewTransaction} />
-                    </Stack>
-                </Fragment>
+                    </Fragment>
             }
         </Fragment>
     );

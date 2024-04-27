@@ -24,15 +24,15 @@ namespace MoneyManager.Server.Service
         public async Task<IEnumerable<WalletDto>> GetAllWalletsForUserAsync(Guid userId, bool trackChanges)
         {
             await CheckIfUserExists(userId, trackChanges);
-            var userWallets = await _repository.UserWallet.GetManyUserWalletsAsync(userId, trackChanges);
-            var walletDtos = _mapper.Map<IEnumerable<WalletDto>>(userWallets);
+            var userWallets = await _repository.UserWallet.GetManyUserWalletsByUserAsync(userId, trackChanges);
+            var walletDtos = _mapper.Map<IList<WalletDto>>(userWallets);
             return walletDtos;
         }
 
         public async Task<IEnumerable<WalletDto>> GetAllWalletsWithTotalForUserAsync(Guid userId, bool trackChanges)
         {
             await CheckIfUserExists(userId, trackChanges);
-            var userWallets = await _repository.UserWallet.GetManyUserWalletsAsync(userId, trackChanges);
+            var userWallets = await _repository.UserWallet.GetManyUserWalletsByUserAsync(userId, trackChanges);
             var walletDtos = _mapper.Map<IList<WalletDto>>(userWallets);
             var sumUserBalances = walletDtos.Sum(x => x.UserBalance);
             var totalDto = new WalletDto
@@ -43,6 +43,7 @@ namespace MoneyManager.Server.Service
                 Name = "Total",
                 Balance = sumUserBalances,
                 UserBalance = sumUserBalances,
+                Avatar = "/total.png"
             };
             walletDtos.Insert(0, totalDto);
             return walletDtos;
@@ -79,13 +80,14 @@ namespace MoneyManager.Server.Service
             return walletToReturn;
         }
 
-        public async Task UpdateWalletNameForUserAsync
-            (Guid userId, Guid walletId, WalletForUpdateNameDto walletDto, bool userTrackChanges, bool walletTrackChanges)
+        public async Task UpdateWalletForUserAsync
+            (Guid userId, Guid walletId, WalletForUpdateDto walletDto, bool userTrackChanges, bool walletTrackChanges)
         {
             await CheckIfUserExists(userId, userTrackChanges);
             var wallet = await GetWalletAndCheckIfItExists(walletId, walletTrackChanges);
             _ = await GetUserWalletAndCheckIfItExists(userId, walletId, userTrackChanges);
             wallet.Name = walletDto.Name;
+            wallet.Avatar = walletDto.Avatar;
             await _repository.SaveAsync();
         }
 
@@ -109,6 +111,16 @@ namespace MoneyManager.Server.Service
                 _repository.UserWallet.CreateUserWallet(newUserWallet);
                 await _repository.SaveAsync();
             }
+        }
+
+        public async Task<IEnumerable<WalletMemberDto>> GetAllMembersOfWalletsAsync(Guid userId, Guid walletId, bool trackChanges)
+        {
+            await CheckIfUserExists(userId, trackChanges);
+            _ = await GetWalletAndCheckIfItExists(walletId, trackChanges);
+            _ = await GetUserWalletAndCheckIfItExists(userId, walletId, trackChanges);
+            var userWallets = await _repository.UserWallet.GetManyUserWalletsByWalletAsync(walletId, trackChanges);
+            var walletMemberDtos = _mapper.Map<IList<WalletMemberDto>>(userWallets);
+            return walletMemberDtos;
         }
 
         //Todo

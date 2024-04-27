@@ -13,9 +13,11 @@ namespace MoneyManager.Server.Contracts.ServiceContracts
 
         Task<WalletDto> CreateWalletForUserAsync(Guid userId, WalletForCreationDto walletDto, bool trackChanges);
 
-        Task UpdateWalletNameForUserAsync
-            (Guid userId, Guid walletId, WalletForUpdateNameDto walletDto, bool userTrackChanges, bool walletTrackChanges);
+        Task UpdateWalletForUserAsync
+            (Guid userId, Guid walletId, WalletForUpdateDto walletDto, bool userTrackChanges, bool walletTrackChanges);
 
         Task AddFriendToWalletAsync(Guid userId, Guid walletId, Guid friendId, bool trackChanges);
+
+        Task<IEnumerable<WalletMemberDto>> GetAllMembersOfWalletsAsync(Guid userId, Guid walletId, bool trackChanges);
     }
 }

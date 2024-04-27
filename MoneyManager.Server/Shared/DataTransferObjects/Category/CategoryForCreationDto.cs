@@ -9,5 +9,7 @@ namespace MoneyManager.Server.Shared.DataTransferObjects.Category
 
         [Required(ErrorMessage = "Category type is a required field.")]
         public int Type { get; init; }
+
+        public string? Avatar {  get; init; }
     }
 }

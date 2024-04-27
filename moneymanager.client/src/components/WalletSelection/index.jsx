@@ -1,13 +1,10 @@
-import {
-    Avatar, ClickAwayListener, Divider, List, ListItem,
-    ListItemAvatar, ListItemIcon, ListItemText, Stack, Tooltip, Typography
-} from '@mui/material';
+import { Avatar, ClickAwayListener, Divider, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, Stack, Tooltip, Typography } from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
-import { Fragment, memo, useState, useEffect } from 'react';
+import { Fragment, memo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './WalletSelection.module.scss';
-import currencyFormatter from '../../utils/currencyFormatter';
+import currencyFormatter from '@/utils/currencyFormatter';
 
 const cx = classNames.bind(styles)
 
@@ -16,15 +13,35 @@ function WalletSelection({ listWallets, selectedWallet, selectWallet }) {
     const [isShowingSelection, setIsShowingSelection] = useState(false)
     const negative = useNavigate()
 
+    const onChangeSelection = (index, wallet) => {
+        selectWallet(wallet)
+        setIsShowingSelection(false)
+        const href = window.location.href
+        if (index === 0) {
+            if (href.includes('spending-report')) {
+                negative('/spending-report')
+            } else {
+                negative('/')
+            }
+        }
+        else {
+            if (href.includes('spending-report')) {
+                negative(`/spending-report/wallet/${wallet.id}`)
+            } else {
+                negative(`/wallet/${wallet.id}`)
+            }
+        }
+    }
+
     return (
         <ClickAwayListener onClickAway={() => setIsShowingSelection(false)} >
             <Stack>
                 {
                     selectedWallet &&
-                    <Tooltip title={<h2>Select Wallet</h2>} arrow>
+                    <Tooltip title={<h3>Select Wallet</h3>} arrow>
                         <Stack direction="row" className={cx('wallet')}
                             onClick={() => setIsShowingSelection(prev => !prev)}>
-                            <Avatar className={cx('icon')} src={''} />
+                            <Avatar className={cx('icon')} src={selectedWallet.avatar} />
                             <Stack direction="column" className={cx('menu')}>
                                 <span className={cx('name', 'primary-text')}>
                                     {selectedWallet.name} &#9662;
@@ -50,18 +67,9 @@ function WalletSelection({ listWallets, selectedWallet, selectWallet }) {
                                     return <Fragment key={index}>
                                         <ListItem
                                             className={cx('wallet-item')}
-                                            onClick={() => {
-                                                selectWallet(wallet)
-                                                setIsShowingSelection(false)
-                                                if (index === 0) {
-                                                    negative('/')
-                                                }
-                                                else {
-                                                    negative(`/wallet/${wallet.id}`)
-                                                }
-                                            }}>
+                                            onClick={() => onChangeSelection(index, wallet)}>
                                             <ListItemAvatar>
-                                                <Avatar src={''} />
+                                                <Avatar sx={{ width: '48px', height: '48px', mr: '15px' }} src={wallet.avatar} />
                                             </ListItemAvatar>
                                             <ListItemText
                                                 primary={

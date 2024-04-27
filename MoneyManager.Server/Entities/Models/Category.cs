@@ -11,5 +11,7 @@ namespace MoneyManager.Server.Entities.Models
 
         [Required(ErrorMessage = "Category type is a required field.")]
         public int Type { get; set; }   
+
+        public string? Avatar { get; set; }
     }
 }

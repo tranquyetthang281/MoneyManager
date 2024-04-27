@@ -1,0 +1,11 @@
+.avatar-item {
+    &:hover {
+        cursor: pointer;
+        background-color: rgba(45, 184, 76, .2);
+    }
+}
+
+.avatar {
+    margin-left: 20px;
+    margin-right: 50px;
+}

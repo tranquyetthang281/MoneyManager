@@ -35,11 +35,19 @@ namespace MoneyManager.Server.Utility
                 .ForMember(dto => dto.Name, opt => opt.MapFrom(source => source.Wallet!.Name))
                 .ForMember(dto => dto.Balance, opt => opt.MapFrom(source => source.Wallet!.Balance))
                 .ForMember(dto => dto.InitBalance, opt => opt.MapFrom(source => source.Wallet!.InitBalance))
+                .ForMember(dto => dto.Avatar, opt => opt.MapFrom(source => source.Wallet!.Avatar))
                 .ForMember(dto => dto.UserBalance, opt => opt.MapFrom(source => source.Balance))
                 .ForMember(dto => dto.IsOwner, opt => opt.MapFrom(source => source.IsOwner));
-          
+
             CreateMap<WalletForCreationDto, Wallet>()
                 .ForMember(w => w.Balance, opt => opt.MapFrom(source => source.InitBalance));
+
+            CreateMap<UserWallet, WalletMemberDto>()
+                .ForMember(dto => dto.Id, opt => opt.MapFrom(source => source.User!.Id))
+                .ForMember(dto => dto.Name, opt => opt.MapFrom(source => source.User!.Name))
+                .ForMember(dto => dto.Email, opt => opt.MapFrom(source => source.User!.Email))
+                .ForMember(dto => dto.Avatar, opt => opt.MapFrom(source => source.User!.Avatar))
+                .ForMember(dto => dto.IsOwner, opt => opt.MapFrom(source => source.IsOwner));
         }
 
         private void CreateMapForFriend()

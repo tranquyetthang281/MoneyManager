@@ -9,5 +9,7 @@ namespace MoneyManager.Server.Shared.DataTransferObjects.Wallet
         public string? Name { get; init; }
 
         public decimal InitBalance { get; init; }
+
+        public string? Avatar { get; init; }
     }
 }

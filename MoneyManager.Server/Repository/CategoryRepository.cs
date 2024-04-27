@@ -11,10 +11,10 @@ namespace MoneyManager.Server.Repository
         }
 
         public async Task<IEnumerable<Category>> GetAllCategoriesAsync(bool trackChanges)
-            => await FindAll(trackChanges).ToListAsync();
+            => await FindAll(trackChanges).OrderBy(c => c.Id.ToString()).ToListAsync();
 
         public async Task<IEnumerable<Category>> GetManyCategoriesByTypeAsync(int type, bool trackChanges)
-            => await FindByCondition(c => c.Type == type, trackChanges).ToListAsync();
+            => await FindByCondition(c => c.Type == type, trackChanges).OrderBy(c => c.Id.ToString()).ToListAsync();
 
         public async Task<Category?> GetCategoryAsync(Guid id, bool trackChanges)
             => await FindByCondition(c => c.Id == id, trackChanges).SingleOrDefaultAsync();

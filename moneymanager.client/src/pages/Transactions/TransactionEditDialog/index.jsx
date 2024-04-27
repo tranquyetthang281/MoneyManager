@@ -2,43 +2,52 @@ import { Avatar, Dialog, DialogContent, DialogTitle, Stack, Typography, InputBas
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import dayjs from "dayjs";
 import classNames from "classnames/bind";
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useContext, useEffect, useState } from "react";
 import { NumericFormat } from 'react-number-format';
 import styles from "./TransactionEditDialog.module.scss"
 import { GUID_EMPTY, CURRENCY_UNIT } from '@/utils/constants'
-import WalletSelectionDialog from "@/components/WalletSelectionDialog";
-import CategorySelectionDialog from "@/components/CategorySelectionDialog";
+import WalletSelectionDialog from "../WalletSelectionDialog";
+import CategorySelectionDialog from "../CategorySelectionDialog";
 import DatePickerDialog from "@/components/DatePickerDialog";
-import * as transactionService from "@/apiServices/services/transactionService"
+import { transactionService } from "@/apiServices"
+import { TransactionsPageContext } from "../TransactionsPageProvider/index";
+import { AuthContext } from "@/components/AuthProvider";
+import useErrorSnackbar from "@/hooks/useErrorSnackbar";
 
 const cx = classNames.bind(styles)
 
-function TransactionEditDialog({ userId, listWallets, categories, transaction, wallet, reloadTransactions, open, openCloseEditDialog, add }) {
+function TransactionEditDialog({ reloadTransactions }) {
 
+    const { auth } = useContext(AuthContext)
     const [openWalletSelectionDialog, setOpenWalletSelectionDialog] = useState(false)
     const [openCategorySelectionDialog, setOpenCategorySelectionDialog] = useState(false)
     const [openDatePickerDialog, setOpenDatePickerDialog] = useState(false)
-    const [selectedWallet, setSelectedWallet] = useState()
+    const [selectedEditWallet, setSelectedEditWallet] = useState()
     const [selectedCategory, setSelectedCategory] = useState()
-    const [amount, setAmount] = useState()
+    const [amount, setAmount] = useState(null)
     const [date, setDate] = useState(dayjs());
     const [note, setNote] = useState('')
     const [enableToSave, setEnableToSave] = useState(false)
-    const selectWallet = useCallback((wallet) => { setSelectedWallet(wallet) }, [])
-    const openCloseWalletSelectionDialog = useCallback((open) => setOpenWalletSelectionDialog(open), [])
-    const openCloseCategorySelectionDialog = useCallback((open) => setOpenCategorySelectionDialog(open), [])
-    const openCloseDatePickerDialog = useCallback((open) => setOpenDatePickerDialog(open), [])
-    const selectCategory = useCallback((category) => { setSelectedCategory(category) }, [])
-    const selectDate = useCallback((date) => setDate(date), [])
+    const {
+        listWallets,
+        dicCategories,
+        selectedTransaction,
+        selectedWallet,
+        openEditDialog,
+        setOpenEditDialog,
+        setOpenDetail,
+        addNewTransaction
+    } = useContext(TransactionsPageContext)
+    const showErrorSnackbar = useErrorSnackbar()
 
     const handleClose = (_, reason) => {
         if (reason && reason === "backdropClick")
             return;
-        openCloseEditDialog(false, true);
+        setOpenEditDialog(false);
     }
 
     const handleSavingChange = () => {
-        if (add) {
+        if (addNewTransaction) {
             const transactionForCreation = {
                 date: date,
                 amount: selectedCategory.type > 0 ? amount : - amount,
@@ -47,54 +56,56 @@ function TransactionEditDialog({ userId, listWallets, categories, transaction, w
                 transferredUserId: null,
                 transferredWalletId: null
             }
-            transactionService.createNewTransaction(userId, selectedWallet.id, transactionForCreation)
+            transactionService.createNewTransaction(auth.userId, selectedEditWallet.id, transactionForCreation, auth.accessToken)
                 .then(() => reloadTransactions())
+                .catch(e => showErrorSnackbar(e.message))
         }
         else {
             const transactionForUpdate = {
                 date: date,
-                amount: selectedCategory.type > 0 ? amount : - amount,
+                amount: selectedCategory.type > 0 ? Math.abs(amount) : - Math.abs(amount),
                 note: note,
                 categoryId: selectedCategory.id,
             }
-            transactionService.updateTransaction(userId, selectedWallet.id, transaction.id, transactionForUpdate)
+            transactionService.updateTransaction(auth.userId, selectedTransaction.walletId, selectedTransaction.id, transactionForUpdate, auth.accessToken)
                 .then(() => reloadTransactions())
+                .catch(e => showErrorSnackbar(e.message))
         }
     }
 
     useEffect(() => {
-        if (open && listWallets && wallet) {
-            if (add) {
-                if (wallet.id === GUID_EMPTY) {
-                    setSelectedWallet(null)
+        if (openEditDialog && listWallets && selectedWallet) {
+            if (addNewTransaction) {
+                if (selectedWallet.id === GUID_EMPTY) {
+                    setSelectedEditWallet(null)
                 } else {
-                    setSelectedWallet(wallet)
+                    setSelectedEditWallet(selectedWallet)
                 }
             } else {
-                if (transaction) {
-                    const selectedWallet = listWallets.find(w => w.id === transaction.walletId)
-                    setSelectedWallet(selectedWallet)
+                if (selectedTransaction) {
+                    const selectedWallet = listWallets.find(w => w.id === selectedTransaction.walletId)
+                    setSelectedEditWallet(selectedWallet)
                 }
             }
         }
-    }, [listWallets, wallet, transaction, open])
+    }, [listWallets, selectedWallet, selectedTransaction, openEditDialog])
 
     useEffect(() => {
-        if (open) {
-            if (!add && transaction && categories) {
-                setSelectedCategory(categories[transaction.categoryId])
+        if (openEditDialog) {
+            if (!addNewTransaction && selectedTransaction && dicCategories) {
+                setSelectedCategory(dicCategories[selectedTransaction.categoryId])
             } else {
                 setSelectedCategory(null)
             }
         }
-    }, [transaction, categories, open])
+    }, [selectedTransaction, dicCategories, openEditDialog])
 
     useEffect(() => {
-        if (open) {
-            if (!add && transaction) {
-                setAmount(Math.abs(transaction.amount))
-                setDate(dayjs(transaction.date))
-                setNote(transaction.note)
+        if (openEditDialog) {
+            if (!addNewTransaction && selectedTransaction) {
+                setAmount(Math.abs(selectedTransaction.amount))
+                setDate(dayjs(selectedTransaction.date))
+                setNote(selectedTransaction.note)
             }
             else {
                 setAmount(null)
@@ -102,15 +113,15 @@ function TransactionEditDialog({ userId, listWallets, categories, transaction, w
                 setNote('')
             }
         }
-    }, [transaction, open])
+    }, [selectedTransaction, openEditDialog])
 
     useEffect(() => {
-        setEnableToSave(selectedWallet && selectedCategory && amount)
-    }, [selectedWallet, selectedCategory, amount, open])
+        setEnableToSave(selectedEditWallet && selectedCategory && amount && amount != 0)
+    }, [selectedEditWallet, selectedCategory, amount, openEditDialog])
 
     return (
 
-        <Dialog open={open} onClose={handleClose} maxWidth="lg"
+        <Dialog open={openEditDialog} onClose={handleClose} maxWidth="lg"
             PaperProps={{
                 sx: {
                     width: 1008,
@@ -119,35 +130,35 @@ function TransactionEditDialog({ userId, listWallets, categories, transaction, w
             }}>
 
             <DialogTitle sx={{ fontSize: "20px", fontWeight: 600 }}>
-                {add ? "Add transaction" : "Edit transaction"}
+                {addNewTransaction ? "Add transaction" : "Edit transaction"}
             </DialogTitle>
 
             <DialogContent dividers className={cx('content')}>
                 <Stack>
                     <Stack direction="row">
-                        <button className={cx(add ? 'select' : 'un-active-select')} onClick={() => {
-                            if (add) {
-                                openCloseWalletSelectionDialog(true)
+                        <button className={cx(addNewTransaction ? 'select' : 'un-active-select')} onClick={() => {
+                            if (addNewTransaction) {
+                                setOpenWalletSelectionDialog(true)
                             }
                         }}>
                             <Stack alignItems="flex-start" sx={{ height: "100%" }}>
                                 <Typography className={cx('select-title')}>Wallet</Typography>
                                 <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: "100%" }}>
                                     <Stack direction="row" alignItems="center">
-                                        <Avatar className={cx('select-avatar')} />
-                                        <Typography className={cx('select-name')}>{selectedWallet ? selectedWallet.name : 'Select wallet'}</Typography>
+                                        <Avatar className={cx('select-avatar')} src={selectedEditWallet ? selectedEditWallet.avatar : ''} />
+                                        <Typography className={cx('select-name')}>{selectedEditWallet ? selectedEditWallet.name : 'Select wallet'}</Typography>
                                     </Stack>
                                     <ArrowForwardIosIcon />
                                 </Stack>
                             </Stack>
                         </button>
 
-                        <button className={cx('select')} onClick={() => openCloseCategorySelectionDialog(true)}>
+                        <button className={cx('select')} onClick={() => setOpenCategorySelectionDialog(true)}>
                             <Stack alignItems="flex-start" sx={{ height: "100%" }}>
                                 <Typography className={cx('select-title')}>Category</Typography>
                                 <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: "100%" }}>
                                     <Stack direction="row" alignItems="center">
-                                        <Avatar className={cx('select-avatar')} />
+                                        <Avatar className={cx('select-avatar')} src={selectedCategory ? selectedCategory.avatar : ''}/>
                                         <Typography className={cx('select-name')}>{selectedCategory ? selectedCategory.name : 'Select category'}</Typography>
                                     </Stack>
                                     <ArrowForwardIosIcon />
@@ -158,12 +169,12 @@ function TransactionEditDialog({ userId, listWallets, categories, transaction, w
                         <Stack alignItems="flex-start" className={cx('select-amount')}>
                             <Typography className={cx('select-title')}>Amount</Typography>
                             <NumericFormat className={cx('input-amount')} placeholder={CURRENCY_UNIT} decimalScale={0}
-                                thousandsGroupStyle="thousand" thousandSeparator="," suffix={` ${CURRENCY_UNIT}`} value={add ? null : amount} onValueChange={(values, _) => setAmount(values.value)} />
+                                thousandsGroupStyle="thousand" thousandSeparator="," suffix={` ${CURRENCY_UNIT}`} value={addNewTransaction ? null : amount} onValueChange={(values, _) => setAmount(values.value)} />
                         </Stack>
                     </Stack>
 
                     <Stack direction="row">
-                        <button className={cx('select')} onClick={() => openCloseDatePickerDialog(true)}>
+                        <button className={cx('select')} onClick={() => setOpenDatePickerDialog(true)}>
                             <Stack alignItems="flex-start" sx={{ height: "100%" }}>
                                 <Typography className={cx('select-title')}>Date</Typography>
                                 <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: "100%" }}>
@@ -182,29 +193,46 @@ function TransactionEditDialog({ userId, listWallets, categories, transaction, w
                     </Stack>
 
 
-                    <WalletSelectionDialog listWallets={listWallets} selectedWallet={selectedWallet} selectWallet={selectWallet} open={openWalletSelectionDialog} openCloseDialog={openCloseWalletSelectionDialog} />
+                    <WalletSelectionDialog 
+                        listWallets={listWallets} 
+                        selectedWallet={selectedEditWallet} 
+                        setSelectedWallet={setSelectedEditWallet}
+                        open={openWalletSelectionDialog} 
+                        setOpen={setOpenWalletSelectionDialog} />
 
-                    <CategorySelectionDialog categories={categories} selectedCategory={selectedCategory} selectCategory={selectCategory} open={openCategorySelectionDialog} openCloseDialog={openCloseCategorySelectionDialog} />
+                    <CategorySelectionDialog 
+                        categories={dicCategories} 
+                        selectedCategory={selectedCategory} 
+                        setSelectedCategory={setSelectedCategory}
+                        open={openCategorySelectionDialog} 
+                        setOpen={setOpenCategorySelectionDialog} />
 
                     {
                         openDatePickerDialog &&
-                        <DatePickerDialog open={openDatePickerDialog} openCloseDialog={openCloseDatePickerDialog} date={date} selectDate={selectDate} />
+                        <DatePickerDialog 
+                            date={date}
+                            setDate={setDate} 
+                            open={openDatePickerDialog} 
+                            setOpen={setOpenDatePickerDialog} 
+                           />
                     }
                 </Stack>
             </DialogContent>
 
             <DialogActions>
-                <Button className={cx('btn', 'cancel-btn')} onClick={() => openCloseEditDialog(false, add)}>
+                <Button className={cx('btn', 'cancel-btn')} onClick={() => {
+                    setOpenEditDialog(false)
+                }}>
                     Cancel
                 </Button>
                 <Button className={cx('btn', enableToSave ? 'save-btn' : 'un-active-saving')} disabled={!enableToSave} onClick={() => {
-                    openCloseEditDialog(false, add)
+                    setOpenDetail(false)
+                    setOpenEditDialog(false)
                     handleSavingChange()
                 }}>
                     Save
                 </Button>
             </DialogActions>
-
         </Dialog>
     );
 }

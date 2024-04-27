@@ -43,9 +43,9 @@ namespace MoneyManager.Server.Presentation.Controllers
         [HttpPut("{walletId:guid}")]
         [ServiceFilter(typeof(ValidationDtoFilterAttribute))]
         [ServiceFilter(typeof(ValidationUserClaimFilterAttribute))]
-        public async Task<IActionResult> UpdateWalletNameForUser(Guid userId, Guid walletId, [FromBody] WalletForUpdateNameDto walletDto)
+        public async Task<IActionResult> UpdateWalletForUser(Guid userId, Guid walletId, [FromBody] WalletForUpdateDto walletDto)
         {
-            await _service.WalletService.UpdateWalletNameForUserAsync
+            await _service.WalletService.UpdateWalletForUserAsync
                 (userId, walletId, walletDto, userTrackChanges: false, walletTrackChanges: true);
             return NoContent();
         }
@@ -57,6 +57,14 @@ namespace MoneyManager.Server.Presentation.Controllers
         {
             await _service.WalletService.AddFriendToWalletAsync(userId, walletId, friendDto.FriendId, trackChanges: false);
             return NoContent();
+        }
+
+        [HttpGet("{walletId:guid}/members")]
+        [ServiceFilter(typeof(ValidationUserClaimFilterAttribute))]
+        public async Task<IActionResult> GetAllMembersOfWallet(Guid userId, Guid walletId)
+        {
+            var members = await _service.WalletService.GetAllMembersOfWalletsAsync(userId, walletId, trackChanges: false);
+            return Ok(members);
         }
     }
 }

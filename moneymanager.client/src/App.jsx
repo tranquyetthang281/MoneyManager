@@ -7,7 +7,7 @@ import { AuthContext } from "./components/AuthProvider";
 function PrivateRoute({ children }) {
     const { auth } = useContext(AuthContext)
 
-    if (false) {
+    if (!auth) {
         return <Navigate to="/login" />
     }
 

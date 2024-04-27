@@ -1,19 +1,16 @@
-import { Dialog, Stack, Button, Select } from "@mui/material";
-import styles from "./DatePickerDialog.module.scss"
-import classNames from "classnames/bind";
-import { memo, useEffect, useState } from "react";
-import dayjs from "dayjs";
+import { Dialog, Stack, Button } from "@mui/material";
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import { redirect } from "react-router-dom";
-import { StaticDatePicker } from "@mui/x-date-pickers";
+import { memo, useState } from "react";
+import classNames from "classnames/bind";
+import styles from "./DatePickerDialog.module.scss"
 
 const cx = classNames.bind(styles)
 
-function DatePickerDialog({ open, openCloseDialog, date, selectDate }) {
+function DatePickerDialog({ date, setDate, disableFuture, onlyMonth, open, setOpen }) {
     const handleClose = (_, reason) => {
         if (reason && reason === "backdropClick")
             return;
-        openCloseDialog(false);
+        setOpen(false);
     }
 
     const [newDate, setNewDate] = useState(date)
@@ -30,10 +27,12 @@ function DatePickerDialog({ open, openCloseDialog, date, selectDate }) {
 
             <Stack>
                 <DateCalendar
+                    disableFuture={disableFuture}
                     value={newDate}
                     onChange={(newDate) => {
                         setNewDate(newDate)
                     }}
+                    views={onlyMonth ? ['month', 'year'] : ['year', 'month', 'day']}
                     sx={{
                         '.MuiPickersCalendarHeader-labelContainer': {
                             fontSize: "16px"
@@ -59,13 +58,13 @@ function DatePickerDialog({ open, openCloseDialog, date, selectDate }) {
 
                 <Stack direction="row-reverse">
                     <Button className={cx('btn', 'save-btn')} onClick={() => {
-                        openCloseDialog(false)
-                        selectDate(newDate)
+                        setOpen(false)
+                        setDate(newDate)
                     }}>
                         Ok
                     </Button>
                     <Button className={cx('btn', 'cancel-btn')}
-                        onClick={() => openCloseDialog(false)}>
+                        onClick={() => setOpen(false)}>
                         Cancel
                     </Button>
                 </Stack>

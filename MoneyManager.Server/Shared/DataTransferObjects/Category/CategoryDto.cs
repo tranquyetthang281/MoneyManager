@@ -6,6 +6,7 @@ namespace MoneyManager.Server.Shared.DataTransferObjects.Category
         (
         Guid Id,
         string Name,
-        int Type
+        int Type,
+        string Avatar
         );
 }

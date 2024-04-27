@@ -49,7 +49,7 @@ namespace MoneyManager.Server.Configure.Extensions
                 new RateLimitRule
                 {
                     Endpoint = "*",
-                    Limit = 12,
+                    Limit = 60,
                     Period = "1m"
                 }
             };
