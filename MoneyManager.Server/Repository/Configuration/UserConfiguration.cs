@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using MoneyManager.Server.Entities.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Repository.Configuration
 {
@@ -8,29 +9,24 @@ namespace Repository.Configuration
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+            var admin = new User
+            {
+                Id = new Guid("89BEDF82-3511-4565-9F44-08DC678E154F"),
+                Name = "Admin",
+                Email = "tranquyetthang281@gmail.com",
+                UserName = "tranquyetthang281@gmail.com",
+                NormalizedUserName = "TRANQUYETTHANG281@GMAIL.COM",
+                NormalizedEmail = "TRANQUYETTHANG281@GMAIL.COM",
+                EmailConfirmed = true,
+                Avatar = string.Empty,
+                BirthDate = DateTime.Now,
+            };
+            PasswordHasher<User> ph = new PasswordHasher<User>();
+            admin.PasswordHash = ph.HashPassword(admin, "28012001");
+
             builder.HasData
             (
-                new User
-                {
-                    Name = "User1",
-                    Email = "user1@gmail.com",
-                    Avatar = string.Empty,
-                    BirthDate = DateTime.Now,
-                },
-                new User
-                {
-                    Name = "User2",
-                    Email = "user2@gmail.com",
-                    Avatar = string.Empty,
-                    BirthDate = DateTime.Now,
-                },
-                new User
-                {
-                    Name = "User3",
-                    Email = "user3@gmail.com",
-                    Avatar = string.Empty,
-                    BirthDate = DateTime.Now,
-                }
+                admin
             );
         }
     }

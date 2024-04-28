@@ -7,9 +7,7 @@ using MoneyManager.Server.Contracts.ServiceContracts;
 using MoneyManager.Server.Entities.Exceptions;
 using MoneyManager.Server.Entities.Models;
 using MoneyManager.Server.Shared.DataTransferObjects.User;
-using MoneyManager.Server.Shared.DataTransferObjects.Wallet;
 using System.IdentityModel.Tokens.Jwt;
-using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Text;
 

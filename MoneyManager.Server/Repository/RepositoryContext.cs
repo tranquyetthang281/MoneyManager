@@ -44,7 +44,8 @@ namespace MoneyManager.Server.Repository
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
-            //modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
             //modelBuilder.ApplyConfiguration(new FriendshipConfiguration());
             //modelBuilder.ApplyConfiguration(new WalletConfiguration());
             //modelBuilder.ApplyConfiguration(new UserWalletConfiguration());

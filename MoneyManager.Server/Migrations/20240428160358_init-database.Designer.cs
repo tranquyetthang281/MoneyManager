@@ -12,8 +12,8 @@ using MoneyManager.Server.Repository;
 namespace MoneyManager.Server.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20240422095614_InittialDatabase")]
-    partial class InittialDatabase
+    [Migration("20240428160358_init-database")]
+    partial class initdatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,14 +55,14 @@ namespace MoneyManager.Server.Migrations
                         new
                         {
                             Id = new Guid("345c9ba5-4135-428c-8592-f343e8456e00"),
-                            ConcurrencyStamp = "2c6a3cb5-3a4b-4707-a43e-84e26dac9ca0",
+                            ConcurrencyStamp = "700151c5-610c-489d-997a-bdcedbdc99a3",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         },
                         new
                         {
                             Id = new Guid("51c67b79-efd4-44d1-9dc1-86932e4b1b18"),
-                            ConcurrencyStamp = "1cde02b8-4366-4789-86b3-639742b637f8",
+                            ConcurrencyStamp = "1b5ed187-d6ad-4d5b-8f8d-e5957ccba573",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -150,6 +150,13 @@ namespace MoneyManager.Server.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("89bedf82-3511-4565-9f44-08dc678e154f"),
+                            RoleId = new Guid("51c67b79-efd4-44d1-9dc1-86932e4b1b18")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -441,6 +448,26 @@ namespace MoneyManager.Server.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("89bedf82-3511-4565-9f44-08dc678e154f"),
+                            AccessFailedCount = 0,
+                            Avatar = "",
+                            BirthDate = new DateTime(2024, 4, 28, 23, 3, 57, 790, DateTimeKind.Local).AddTicks(4876),
+                            ConcurrencyStamp = "3785264f-0a2c-427b-a43a-c15867d95fa9",
+                            Email = "tranquyetthang281@gmail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            Name = "Admin",
+                            NormalizedEmail = "TRANQUYETTHANG281@GMAIL.COM",
+                            NormalizedUserName = "TRANQUYETTHANG281@GMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBicqhabDxBda1WfRgfcbTlsAQ37A4LMjuLGcS6d9BzBn8FvkaAB1li87bLPMd+9sQ==",
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false,
+                            UserName = "tranquyetthang281@gmail.com"
+                        });
                 });
 
             modelBuilder.Entity("MoneyManager.Server.Entities.Models.UserWallet", b =>

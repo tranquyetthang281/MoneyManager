@@ -3,8 +3,8 @@ using MoneyManager.Server.Contracts.ServiceContracts;
 using MoneyManager.Server.Presentation.ActionFilters;
 using MoneyManager.Server.Shared.DataTransferObjects.User;
 using MoneyManager.Server.Entities.Email;
+using Microsoft.AspNetCore.Identity;
 using MoneyManager.Server.Entities.Models;
-using MoneyManager.Server.Shared.DataTransferObjects.Wallet;
 
 namespace MoneyManager.Server.Presentation.Controllers
 {

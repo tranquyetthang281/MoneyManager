@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MoneyManager.Server.Migrations
 {
-    public partial class InittialDatabase : Migration
+    public partial class initdatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -296,9 +296,14 @@ namespace MoneyManager.Server.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("345c9ba5-4135-428c-8592-f343e8456e00"), "2c6a3cb5-3a4b-4707-a43e-84e26dac9ca0", "ApplicationUser", "APPLICATIONUSER" },
-                    { new Guid("51c67b79-efd4-44d1-9dc1-86932e4b1b18"), "1cde02b8-4366-4789-86b3-639742b637f8", "Administrator", "ADMINISTRATOR" }
+                    { new Guid("345c9ba5-4135-428c-8592-f343e8456e00"), "700151c5-610c-489d-997a-bdcedbdc99a3", "ApplicationUser", "APPLICATIONUSER" },
+                    { new Guid("51c67b79-efd4-44d1-9dc1-86932e4b1b18"), "1b5ed187-d6ad-4d5b-8f8d-e5957ccba573", "Administrator", "ADMINISTRATOR" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "Avatar", "BirthDate", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { new Guid("89bedf82-3511-4565-9f44-08dc678e154f"), 0, "", new DateTime(2024, 4, 28, 23, 3, 57, 790, DateTimeKind.Local).AddTicks(4876), "3785264f-0a2c-427b-a43a-c15867d95fa9", "tranquyetthang281@gmail.com", true, false, null, "Admin", "TRANQUYETTHANG281@GMAIL.COM", "TRANQUYETTHANG281@GMAIL.COM", "AQAAAAEAACcQAAAAEBicqhabDxBda1WfRgfcbTlsAQ37A4LMjuLGcS6d9BzBn8FvkaAB1li87bLPMd+9sQ==", null, false, null, false, "tranquyetthang281@gmail.com" });
 
             migrationBuilder.InsertData(
                 table: "Categories",
@@ -321,6 +326,11 @@ namespace MoneyManager.Server.Migrations
                     { new Guid("af853a77-43a1-4264-af16-bddcaedce257"), "/receive-gifts.png", "Receive Gifts", 1 },
                     { new Guid("d0841186-ed4b-4121-a135-a33df149b576"), "/incoming-transfer.png", "Incoming Transfer", 1 }
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { new Guid("51c67b79-efd4-44d1-9dc1-86932e4b1b18"), new Guid("89bedf82-3511-4565-9f44-08dc678e154f") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
