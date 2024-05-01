@@ -108,7 +108,7 @@ function Account() {
                             }
                         }}>
                             <Stack alignItems="flex-start" sx={{ height: "100%" }}>
-                                <Typography className={cx('select-title')}>Date</Typography>
+                                <Typography className={cx('select-title')}>Birth date</Typography>
                                 <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: "100%" }}>
                                     <Typography className={cx('date')}>{date.format('DD/MM/YYYY')}</Typography>
                                     <ArrowForwardIosIcon />

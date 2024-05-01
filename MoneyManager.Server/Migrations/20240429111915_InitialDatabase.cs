@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MoneyManager.Server.Migrations
 {
-    public partial class initdatabase : Migration
+    public partial class InitialDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -296,14 +296,14 @@ namespace MoneyManager.Server.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("345c9ba5-4135-428c-8592-f343e8456e00"), "700151c5-610c-489d-997a-bdcedbdc99a3", "ApplicationUser", "APPLICATIONUSER" },
-                    { new Guid("51c67b79-efd4-44d1-9dc1-86932e4b1b18"), "1b5ed187-d6ad-4d5b-8f8d-e5957ccba573", "Administrator", "ADMINISTRATOR" }
+                    { new Guid("345c9ba5-4135-428c-8592-f343e8456e00"), "a4a92634-6f20-4c56-8ef5-99cb44aed8b4", "ApplicationUser", "APPLICATIONUSER" },
+                    { new Guid("51c67b79-efd4-44d1-9dc1-86932e4b1b18"), "014b7098-c30d-4c3e-8b00-a259ef616831", "Administrator", "ADMINISTRATOR" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Avatar", "BirthDate", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { new Guid("89bedf82-3511-4565-9f44-08dc678e154f"), 0, "", new DateTime(2024, 4, 28, 23, 3, 57, 790, DateTimeKind.Local).AddTicks(4876), "3785264f-0a2c-427b-a43a-c15867d95fa9", "tranquyetthang281@gmail.com", true, false, null, "Admin", "TRANQUYETTHANG281@GMAIL.COM", "TRANQUYETTHANG281@GMAIL.COM", "AQAAAAEAACcQAAAAEBicqhabDxBda1WfRgfcbTlsAQ37A4LMjuLGcS6d9BzBn8FvkaAB1li87bLPMd+9sQ==", null, false, null, false, "tranquyetthang281@gmail.com" });
+                values: new object[] { new Guid("89bedf82-3511-4565-9f44-08dc678e154f"), 0, "", new DateTime(2024, 4, 29, 18, 19, 15, 457, DateTimeKind.Local).AddTicks(861), "63383ca2-7095-4f01-b64d-1300bb105922", "tranquyetthang@gmail.com", true, false, null, "Admin", "TRANQUYETTHANG@GMAIL.COM", "TRANQUYETTHANG@GMAIL.COM", "AQAAAAEAACcQAAAAEB379vq/qZdSLItdOiUraUCoRUFNv3i83tpIOLelk0kZ2539tYf47ACWVLsXOl/wtw==", null, false, null, false, "tranquyetthang@gmail.com" });
 
             migrationBuilder.InsertData(
                 table: "Categories",

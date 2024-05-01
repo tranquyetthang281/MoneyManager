@@ -106,8 +106,8 @@ function TransactionDetail({ reloadTransactions }) {
                 <DialogActions>
                     <Button className={cx('no-btn')} onClick={closeConfirmDeleteDialog} autoFocus>No</Button>
                     <Button className={cx('yes-btn')} onClick={() => {
-                        closeConfirmDeleteDialog()
                         deleteTransaction()
+                        closeConfirmDeleteDialog()
                     }}>
                         Yes
                     </Button>

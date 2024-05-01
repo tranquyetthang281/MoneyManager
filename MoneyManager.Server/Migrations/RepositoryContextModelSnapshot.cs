@@ -53,14 +53,14 @@ namespace MoneyManager.Server.Migrations
                         new
                         {
                             Id = new Guid("345c9ba5-4135-428c-8592-f343e8456e00"),
-                            ConcurrencyStamp = "700151c5-610c-489d-997a-bdcedbdc99a3",
+                            ConcurrencyStamp = "a4a92634-6f20-4c56-8ef5-99cb44aed8b4",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         },
                         new
                         {
                             Id = new Guid("51c67b79-efd4-44d1-9dc1-86932e4b1b18"),
-                            ConcurrencyStamp = "1b5ed187-d6ad-4d5b-8f8d-e5957ccba573",
+                            ConcurrencyStamp = "014b7098-c30d-4c3e-8b00-a259ef616831",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });
@@ -453,18 +453,18 @@ namespace MoneyManager.Server.Migrations
                             Id = new Guid("89bedf82-3511-4565-9f44-08dc678e154f"),
                             AccessFailedCount = 0,
                             Avatar = "",
-                            BirthDate = new DateTime(2024, 4, 28, 23, 3, 57, 790, DateTimeKind.Local).AddTicks(4876),
-                            ConcurrencyStamp = "3785264f-0a2c-427b-a43a-c15867d95fa9",
-                            Email = "tranquyetthang281@gmail.com",
+                            BirthDate = new DateTime(2024, 4, 29, 18, 19, 15, 457, DateTimeKind.Local).AddTicks(861),
+                            ConcurrencyStamp = "63383ca2-7095-4f01-b64d-1300bb105922",
+                            Email = "tranquyetthang@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             Name = "Admin",
-                            NormalizedEmail = "TRANQUYETTHANG281@GMAIL.COM",
-                            NormalizedUserName = "TRANQUYETTHANG281@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBicqhabDxBda1WfRgfcbTlsAQ37A4LMjuLGcS6d9BzBn8FvkaAB1li87bLPMd+9sQ==",
+                            NormalizedEmail = "TRANQUYETTHANG@GMAIL.COM",
+                            NormalizedUserName = "TRANQUYETTHANG@GMAIL.COM",
+                            PasswordHash = "AQAAAAEAACcQAAAAEB379vq/qZdSLItdOiUraUCoRUFNv3i83tpIOLelk0kZ2539tYf47ACWVLsXOl/wtw==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
-                            UserName = "tranquyetthang281@gmail.com"
+                            UserName = "tranquyetthang@gmail.com"
                         });
                 });
 

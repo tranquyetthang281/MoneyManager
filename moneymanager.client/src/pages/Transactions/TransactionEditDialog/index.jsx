@@ -226,9 +226,9 @@ function TransactionEditDialog({ reloadTransactions }) {
                     Cancel
                 </Button>
                 <Button className={cx('btn', enableToSave ? 'save-btn' : 'un-active-saving')} disabled={!enableToSave} onClick={() => {
+                    handleSavingChange()
                     setOpenDetail(false)
                     setOpenEditDialog(false)
-                    handleSavingChange()
                 }}>
                     Save
                 </Button>

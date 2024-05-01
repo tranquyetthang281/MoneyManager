@@ -61,6 +61,7 @@ export default function LogIn() {
                         } else {
                             showErrorSnackbar(e.response.data.Message)
                         }
+                        setLoading(false)
                     })
             }
         }
